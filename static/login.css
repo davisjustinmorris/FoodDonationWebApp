@@ -1,0 +1,38 @@
+.fx {
+  display: flex;
+}
+.fx.fdc {
+  flex-direction: column;
+}
+.fx.jcc {
+  justify-content: center;
+}
+.fx.aic {
+  align-items: center;
+}
+
+.fx-asc {
+  align-self: center;
+}
+
+#login, #signup {
+  display: none;
+}
+#login.active, #signup.active {
+  display: flex;
+}
+#login h3, #signup h3 {
+  text-transform: capitalize;
+}
+#login input[type=submit], #signup input[type=submit] {
+  margin-top: 0.5rem;
+}
+#login span.log_sign, #signup span.log_sign {
+  margin-top: 1rem;
+  text-decoration: underline;
+  color: #029;
+  cursor: pointer;
+  align-self: center;
+}
+
+/*# sourceMappingURL=login.css.map */

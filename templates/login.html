@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="{{ url_for('static', filename='jquery-3.6.0.js') }}"></script>
+    <script src="{{ url_for('static', filename='login.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+
+</head>
+<body class="fx fdc jcc aic">
+    <form id="login" method="post" action="login" class="fx fdc active">
+        <h3 class="fx-asc">login</h3>
+        <input type="text" name="email" placeholder="email">
+        <input type="password" name="password" placeholder="password">
+        <input type="submit" value="login">
+
+        <span class="log_sign">New member? Signup</span>
+
+        <input type="hidden" name="task" value="login">
+    </form>
+
+    <form id="signup" method="post" action="login" class="fx fdc">
+        <h3 class="fx-asc">signup</h3>
+        <input type="text" name="name" placeholder="name">
+        <input type="text" name="email" placeholder="email">
+        <input type="password" name="password" placeholder="password">
+        <input type="submit" value="signup">
+
+        <span class="log_sign">Existing member? Login</span>
+
+        <input type="hidden" name="task" value="signup">
+    </form>
+
+    <span id="refresh_message" class="fx-asc">{{ refresh_message }}</span>
+</body>
+</html>
