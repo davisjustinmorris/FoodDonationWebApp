@@ -11,11 +11,15 @@
     <script src="{{ url_for('static', filename='user_dashboard.js') }}"></script>
 
 </head>
-<body class="fx fdc">
+<body class="fx fdc aifs">
     {% include 'partials/header_1.html' %}
 
-    <div class="container fx fdc jcc aic fx-spacer">
-        <form id="request-form" class="full-popup fx fdc" method="post" action="/dashboard">
+    <button id="btn-create-request" onclick="$('#request-form').parent().toggleClass('active')" type="button">
+        Create Request
+    </button>
+
+    <div id="full-popup" class="fx fdc jcc aic full-popup">
+        <form id="request-form" class="fx fdc" method="post" action="/dashboard">
             <h2 class="fx-asc">create request</h2>
 
             <div class="fx">
@@ -46,5 +50,47 @@
             <input type="submit" value="Create">
         </form>
     </div>
+
+    {% if payload.created %}
+    <details id="open-list">
+        <summary>Opened Requests</summary>
+        {% for request in payload.created %}
+            <span>{{ request.created_ts }}</span>
+            <span>{{ request.req_qty_in_person }}</span>
+        {% endfor %}
+    </details>
+    {% endif %}
+
+    {% if payload.confirmed %}
+    <details id="confirmed-list">
+        <summary>Confirmed Requests</summary>
+        {% for request in payload.confirmed %}
+        <div class="row fx">
+            <span>{{ request.created_ts }}</span>
+            <span>{{ request.req_qty_in_person }}</span>
+        </div>
+        {% endfor %}
+    </details>
+    {% endif %}
+
+    {% if payload.delivered %}
+    <details id="delivered-list">
+        <summary>Delivered Requests</summary>
+        {% for request in payload.delivered %}
+            <span>{{ request.created_ts }}</span>
+            <span>{{ request.req_qty_in_person }}</span>
+        {% endfor %}
+    </details>
+    {% endif %}
+
+    {% if payload.reviewed %}
+    <details id="reviewed-list">
+        <summary>Reviewed Requests</summary>
+        {% for request in payload.reviewed %}
+            <span>{{ request.created_ts }}</span>
+            <span>{{ request.req_qty_in_person }}</span>
+        {% endfor %}
+    </details>
+    {% endif %}
 </body>
 </html>

@@ -15,6 +15,9 @@
 .fx.aic {
   align-items: center;
 }
+.fx.aifs {
+  align-items: flex-start;
+}
 
 .fx-asc {
   align-self: center;
@@ -29,6 +32,7 @@
 }
 
 body nav.main-styles {
+  align-self: stretch;
   padding: 1rem 2rem;
 }
 

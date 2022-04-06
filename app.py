@@ -42,6 +42,8 @@ def handle_login():
         user_email = request.form.get('email')
         user_password = request.form.get('password')
         is_volunteer = 1 if request.form.get('is_volunteer') else 0
+        phone = request.form.get('phone')
+        address = request.form.get('address')
 
         if task == 'login':
             login_result = db_man.put_login_session(email=user_email, pwd=user_password)
@@ -53,7 +55,7 @@ def handle_login():
 
         elif task == 'signup':
             signup_result = db_man.add_login_info(email=user_email, pwd=user_password, name=user_name,
-                                                  is_vol=is_volunteer)
+                                                  is_vol=is_volunteer, phone=phone, address=address)
             if signup_result.get('status'):
                 refresh_message = "Signup successful! Login to your account"
             else:
@@ -99,7 +101,8 @@ def handle_user_dashboard():
         db_man.create_donor_request(payload=payload)
         return 'req created<br><a href="/">Back to page</a>'
 
-    return render_template('user_dashboard.html')
+    uid = session['user_info']['uid']
+    return render_template('user_dashboard.html', payload=db_man.get_users_requests(uid=uid))
 
 
 @app.route('/volunteer_dashboard')

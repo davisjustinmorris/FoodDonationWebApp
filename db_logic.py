@@ -79,16 +79,16 @@ class DbManager:
         conn.commit()
         conn.close()
 
-    def add_login_info(self, email, pwd, name, is_vol):
+    def add_login_info(self, email, pwd, name, is_vol, phone, address):
         """Signup"""
-        query_insert = "INSERT INTO user_table (email, password, name, is_volunteer) " \
-                       "VALUES (?,?,?,?) "
-        query_check_email = "SELECT pk_uid, name FROM user_table WHERE email = ?"
+        query_insert = "INSERT INTO user_table (email, password, name, is_volunteer, phone, address) " \
+                       "VALUES (?,?,?,?,?,?)"
+        query_check_email = "SELECT pk_uid, name FROM user_table WHERE email=?"
 
         conn = self.connection_provider()
         email_exists = conn.execute(query_check_email, (email,)).fetchone()
         if not email_exists:
-            conn.execute(query_insert, (email, pwd, name, is_vol))
+            conn.execute(query_insert, (email, pwd, name, is_vol, phone, address))
             conn.commit()
             conn.close()
             return {'status': True}
@@ -124,3 +124,45 @@ class DbManager:
         ))
         conn.commit()
         conn.close()
+
+    def get_users_requests(self, uid, active=True, state='created'):
+        get_query = "SELECT pk_rid, fk_creator_uid, created_ts, last_updated_ts, request_status, " \
+                    "review_rating, review_feedback, fk_handled_vol_id, is_donate_req, req_qty_in_person, " \
+                    "contact_details_same_as_user, contact_phone, location_as_address " \
+                    "FROM request_table " \
+                    "WHERE fk_creator_uid=? " \
+                    "LIMIT 20"
+        conn = self.connection_provider()
+        get_result = conn.execute(get_query, (uid,)).fetchall()
+        conn.close()
+
+        result_obj_list = [
+            {
+                'pk_rid': item[0],
+                'fk_creator_uid': item[1],
+                'created_ts': item[2],
+                'last_updated_ts': item[3],
+                'request_status': item[4],
+                'review_rating': item[5],
+                'review_feedback': item[6],
+                'fk_handled_vol_id': item[7],
+                'is_donate_req': item[8],
+                'req_qty_in_person': item[9],
+                'contact_details_same_as_user': item[10],
+                'contact_phone': item[11],
+                'location_as_address': item[12]
+            } 
+            for item in get_result
+        ]
+
+        result_obj = {
+            'created': [],
+            'confirmed': [],
+            'delivered': [],
+            'reviewed': []
+        }
+        for item in result_obj_list:
+            status = item.get('request_status')
+            result_obj[status].append(item)
+
+        return result_obj
