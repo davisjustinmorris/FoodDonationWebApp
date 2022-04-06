@@ -1,20 +1,3 @@
-.fx {
-  display: flex;
-}
-.fx.fdc {
-  flex-direction: column;
-}
-.fx.jcc {
-  justify-content: center;
-}
-.fx.aic {
-  align-items: center;
-}
-
-.fx-asc {
-  align-self: center;
-}
-
 #login, #signup {
   display: none;
 }

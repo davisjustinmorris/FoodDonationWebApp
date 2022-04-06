@@ -73,16 +73,19 @@ def handle_login():
 
 @app.route('/dashboard')
 def handle_user_dashboard():
-    return 'Hello User!'
+    """Homepage of users"""
+    return render_template('user_dashboard.html')
 
 
 @app.route('/admin_dashboard')
 def handle_admin_dashboard():
+    """Homepage for volunteers"""
     return 'Hello Volunteer!'
 
 
 @app.route('/super_admin')
 def handle_super_admin():
+    """Homepage for super admins"""
     return 'Hello Super Man!'
 
 

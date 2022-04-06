@@ -1,0 +1,35 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.fx {
+  display: flex;
+}
+.fx.fdc {
+  flex-direction: column;
+}
+.fx.jcc {
+  justify-content: center;
+}
+.fx.aic {
+  align-items: center;
+}
+
+.fx-asc {
+  align-self: center;
+}
+
+.fx-spacer {
+  flex-grow: 1;
+}
+
+.list-lsn {
+  list-style: none;
+}
+
+body nav.main-styles {
+  padding: 1rem 2rem;
+}
+
+/*# sourceMappingURL=main.css.map */
