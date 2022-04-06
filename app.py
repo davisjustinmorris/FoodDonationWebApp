@@ -21,10 +21,9 @@ def before_each_req():
         if auth_token:
             session_check_response = db_man.get_logged_in_account(auth_token=auth_token)
             if session_check_response['status']:
-                session['user_type'] = session_check_response['data']['user_type']
+                session['user_info'] = session_check_response['data']
             else:
-                session.pop('auth_token', None)
-                session.pop('user_type', None)
+                session.clear()
                 return redirect(url_for('handle_login'))
 
 
@@ -45,8 +44,7 @@ def handle_login():
         if task == 'login':
             login_result = db_man.put_login_session(email=user_email, pwd=user_password)
             if login_result.get('status'):
-                session['auth_token'] = login_result['data']['auth_token']
-                session['user_type'] = login_result['data']['user_type']
+                session['user_info'] = login_result['data']
             else:
                 # todo: the failed login message can be captured and the detailed response can be sent to the user
                 return render_template('login.html', refresh_message="Login failed!")
@@ -61,11 +59,11 @@ def handle_login():
 
             return render_template('login.html', refresh_message=refresh_message)
 
-    if session.get('user_type') == 'normal_user':
+    if session.get('user_info', {}).get('user_type') == 'normal_user':
         return redirect(url_for('handle_user_dashboard'))
-    elif session.get('user_type') == 'volunteer':
+    elif session.get('user_info', {}).get('user_type') == 'volunteer':
         return redirect(url_for('handle_admin_dashboard'))
-    elif session.get('user_type') == 'super_admin':
+    elif session.get('user_info', {}).get('user_type') == 'super_admin':
         return redirect(url_for('handle_super_admin'))
 
     return render_template('login.html')
@@ -91,11 +89,10 @@ def handle_super_admin():
 
 @app.route('/logout')
 def handle_logout():
-    token = session.get('auth_token')
+    token = session.get('user_info', {}).get('auth_token')
     if token:
         db_man.del_login_session(token=token)
-    session.pop('auth_token', None)
-    session.pop('user_type', None)
+    session.clear()
     return redirect(url_for('handle_login'))
 
 
