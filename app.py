@@ -91,6 +91,9 @@ def handle_super_admin():
 
 @app.route('/logout')
 def handle_logout():
+    token = session.get('auth_token')
+    if token:
+        db_man.del_login_session(token=token)
     session.pop('auth_token', None)
     session.pop('user_type', None)
     return redirect(url_for('handle_login'))
