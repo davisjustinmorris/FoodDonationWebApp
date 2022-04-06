@@ -7,8 +7,44 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <script src="{{ url_for('static', filename='jquery-3.6.0.js') }}"></script>
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='user_dashboard.css') }}">
+    <script src="{{ url_for('static', filename='user_dashboard.js') }}"></script>
+
 </head>
-<body>
+<body class="fx fdc">
     {% include 'partials/header_1.html' %}
+
+    <div class="container fx fdc jcc aic fx-spacer">
+        <form id="request-form" class="full-popup fx fdc" method="post" action="/dashboard">
+            <h2 class="fx-asc">create request</h2>
+
+            <div class="fx">
+                <span>Req Type: </span>
+                <label>
+                    <input type="radio" name="is_donate_req" value="1">
+                    <span>Donate</span>
+                </label>
+                <label>
+                    <input type="radio" name="is_donate_req" value="0">
+                    <span>Receive</span>
+                </label>
+            </div>
+
+            <label>
+                <span>Qty: </span>
+                <input type="text" name="req_qty_in_person" placeholder="In count of person">
+            </label>
+
+            <div class="fx fdc">
+                <label for="cb_contact_details_same_as_user">
+                    <input type="checkbox" name="contact_details_same_as_user" id="cb_contact_details_same_as_user">
+                    <span>contact details same as user</span>
+                </label>
+                <input type="text" name="contact_phone" placeholder="Contact Phone">
+                <textarea name="location_as_address" cols="30" rows="7" placeholder="Delivery Address"></textarea>
+            </div>
+            <input type="submit" value="Create">
+        </form>
+    </div>
 </body>
 </html>

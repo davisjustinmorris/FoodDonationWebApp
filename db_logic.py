@@ -11,6 +11,7 @@ class DbManager:
         if auth_token:
             conn = self.connection_provider()
             account_info_res = conn.execute(query_from_token, (auth_token,)).fetchone()
+            conn.close()
             if account_info_res:
                 user_id, is_volunteer, is_super_admin = account_info_res
 
@@ -29,6 +30,8 @@ class DbManager:
                         'auth_token': auth_token
                     }
                 }
+            
+        return {'status': False}
 
     def put_login_session(self, email, pwd):
         """Login (& update token)"""
@@ -99,4 +102,25 @@ class DbManager:
         return
 
     def create_donor_request(self, payload):
-        return
+        query_insert = "INSERT INTO request_table " \
+                       "(fk_creator_uid, created_ts, last_updated_ts, request_status, " \
+                       "review_rating, review_feedback, fk_handled_vol_id, is_donate_req, req_qty_in_person, " \
+                       "contact_details_same_as_user, contact_phone, location_as_address) " \
+                       "VALUES (?,?,?,?,?,?,?,?,?,?,?,?) "
+        conn = self.connection_provider()
+        conn.execute(query_insert, (
+            payload.get('fk_creator_uid'),
+            payload.get('created_ts'),
+            payload.get('last_updated_ts'),
+            payload.get('request_status'),
+            payload.get('review_rating'),
+            payload.get('review_feedback'),
+            payload.get('fk_handled_vol_id'),
+            payload.get('is_donate_req'),
+            payload.get('req_qty_in_person'),
+            payload.get('contact_details_same_as_user'),
+            payload.get('contact_phone'),
+            payload.get('location_as_address')
+        ))
+        conn.commit()
+        conn.close()
