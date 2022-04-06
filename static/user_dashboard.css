@@ -1,0 +1,31 @@
+body {
+  height: 100vh;
+}
+
+#request-form {
+  width: 20vw;
+  min-width: 12rem;
+  max-width: 30rem;
+}
+#request-form > :nth-child(3), #request-form > :last-child > * {
+  margin: 3px 0;
+}
+#request-form h2 {
+  text-transform: capitalize;
+  margin-bottom: 0.5rem;
+}
+#request-form span:first-child {
+  margin-right: 5px;
+}
+#request-form span:last-child {
+  margin-left: 2px;
+}
+#request-form input[name=is_donate_req][value="0"] {
+  margin-left: 5px;
+}
+#request-form label {
+  display: flex;
+  align-items: center;
+}
+
+/*# sourceMappingURL=user_dashboard.css.map */
