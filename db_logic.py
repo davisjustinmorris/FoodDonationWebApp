@@ -125,15 +125,22 @@ class DbManager:
         conn.commit()
         conn.close()
 
-    def get_users_requests(self, uid, active=True, state='created'):
+    def get_users_requests(self, uid=None, limit=20, active=True, state='created'):
         get_query = "SELECT pk_rid, fk_creator_uid, created_ts, last_updated_ts, request_status, " \
                     "review_rating, review_feedback, fk_handled_vol_id, is_donate_req, req_qty_in_person, " \
-                    "contact_details_same_as_user, contact_phone, location_as_address " \
+                    "contact_details_same_as_user, contact_phone, location_as_address, ut.phone, ut.address " \
                     "FROM request_table " \
-                    "WHERE fk_creator_uid=? " \
-                    "LIMIT 20"
+                    "LEFT JOIN user_table ut ON ut.pk_uid = request_table.fk_creator_uid "
+        query_args = list()
+        if uid:
+            get_query += "WHERE fk_creator_uid=? "
+            query_args.append(uid)
+        if limit:
+            get_query += "LIMIT ? "
+            query_args.append(limit)
+
         conn = self.connection_provider()
-        get_result = conn.execute(get_query, (uid,)).fetchall()
+        get_result = conn.execute(get_query, tuple(query_args)).fetchall()
         conn.close()
 
         result_obj_list = [
@@ -150,10 +157,16 @@ class DbManager:
                 'req_qty_in_person': item[9],
                 'contact_details_same_as_user': item[10],
                 'contact_phone': item[11],
-                'location_as_address': item[12]
-            } 
+                'location_as_address': item[12],
+                'ut_contact_phone': item[13],
+                'ut_address': item[14]
+            }
             for item in get_result
         ]
+        # evaluate phone and address based on <contact_details_same_as_user> value
+        for item in result_obj_list:
+            item['this_contact_phone'] = item['ut_contact_phone'] if item['contact_details_same_as_user'] else item['contact_phone']
+            item['this_contact_address'] = item['ut_address'] if item['contact_details_same_as_user'] else item['location_as_address']
 
         result_obj = {
             'created': [],
@@ -166,3 +179,34 @@ class DbManager:
             result_obj[status].append(item)
 
         return result_obj
+
+    def connect_user_requests(self, volunteer_uid, donor_req_id, receive_req_id):
+        assert volunteer_uid and donor_req_id and receive_req_id, "insufficient data to process request"
+
+        query_connect_reqs = "INSERT INTO matched_request_map (fk_rid_donate, fk_rid_receive) VALUES (?, ?)"
+        query_mark_req_confirm = "UPDATE request_table " \
+                                 "SET last_updated_ts=?, request_status=?, fk_handled_vol_id=? " \
+                                 "WHERE pk_rid=? "
+
+        conn = self.connection_provider()
+
+        conn.execute(query_connect_reqs, (donor_req_id, receive_req_id))
+
+        common_args = (common_code.get_ist(), 'confirmed', volunteer_uid)
+        conn.executemany(query_mark_req_confirm, [common_args+(pk_rid,) for pk_rid in [donor_req_id, receive_req_id]])
+
+        conn.commit()
+        conn.close()
+
+    def user_mark_delivered(self, receive_req_id):
+        query_get_donor_req_id = "SELECT fk_rid_donate FROM matched_request_map WHERE fk_rid_receive=?"
+        query_mark_delivered = "UPDATE request_table SET request_status=? WHERE pk_rid=?"
+
+        conn = self.connection_provider()
+        query_res_donor_req_id = conn.execute(query_get_donor_req_id, (receive_req_id,)).fetchone()
+        assert query_res_donor_req_id
+
+        donate_req_id = query_res_donor_req_id[0]
+        conn.executemany(query_mark_delivered, [('delivered', donate_req_id), ('delivered', receive_req_id)])
+        conn.commit()
+        conn.close()

@@ -1,0 +1,41 @@
+details {
+  margin-top: 2rem;
+}
+details > summary {
+  padding: 4px;
+  width: 200px;
+  background-color: #eeeeee;
+  border: none;
+  box-shadow: 1px 1px 2px #bbbbbb;
+  cursor: pointer;
+}
+details .header {
+  border-top: 2px solid #000;
+  border-bottom: 2px solid #000;
+}
+details .row {
+  border-bottom: 1px solid #111;
+}
+details .row span, details .header span {
+  display: block;
+}
+details .row span, details .row input[type=radio], details .header span, details .header input[type=radio] {
+  border-right: 1px solid #111;
+}
+details .row span:nth-child(1), details .row input[type=radio]:nth-child(1), details .header span:nth-child(1), details .header input[type=radio]:nth-child(1) {
+  width: 1.5rem;
+}
+details .row span:nth-child(2), details .row input[type=radio]:nth-child(2), details .header span:nth-child(2), details .header input[type=radio]:nth-child(2) {
+  width: 18rem;
+}
+details .row span:nth-child(3), details .row input[type=radio]:nth-child(3), details .header span:nth-child(3), details .header input[type=radio]:nth-child(3) {
+  width: 6rem;
+}
+details .row span:nth-child(4), details .row input[type=radio]:nth-child(4), details .header span:nth-child(4), details .header input[type=radio]:nth-child(4) {
+  width: 3rem;
+}
+details .row span:nth-child(5), details .row input[type=radio]:nth-child(5), details .header span:nth-child(5), details .header input[type=radio]:nth-child(5) {
+  width: 10rem;
+}
+
+/*# sourceMappingURL=volunteer_dashboard.css.map */

@@ -7,6 +7,13 @@ import common_code
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '<didac|ribot>'
 
+# ----- REMINDERS -----
+# SESSION['user_info'] = {
+#     'uid': uid,
+#     'user_type': user_type,
+#     'auth_token': session_token
+# }
+
 
 def get_db_connection():
     conn = sqlite3.connect('data.sqlite')
@@ -89,26 +96,50 @@ def handle_user_dashboard():
         # contact_details_same_as_user      - check
         # contact_phone                     - check
         # location_as_address               - check
-        required_form_keys = [
-            'is_donate_req', 'req_qty_in_person', 'contact_details_same_as_user', 'contact_phone', 'location_as_address'
-        ]
-        payload = {key: request.form.get(key) for key in required_form_keys}
-        payload['contact_details_same_as_user'] = 1 if payload['contact_details_same_as_user'] else 0
-        payload['fk_creator_uid'] = session['user_info']['uid']
-        payload['created_ts'] = common_code.get_ist()
-        payload['request_status'] = 'created'
+        task = request.form.get('task')
 
-        db_man.create_donor_request(payload=payload)
-        return 'req created<br><a href="/">Back to page</a>'
+        if task == 'create-request':
+            required_form_keys = [
+                'is_donate_req', 'req_qty_in_person', 'contact_details_same_as_user', 'contact_phone', 'location_as_address'
+            ]
+            payload = {key: request.form.get(key) for key in required_form_keys}
+            payload['contact_details_same_as_user'] = 1 if payload['contact_details_same_as_user'] else 0
+            payload['fk_creator_uid'] = session['user_info']['uid']
+            payload['created_ts'] = common_code.get_ist()
+            payload['request_status'] = 'created'
+
+            db_man.create_donor_request(payload=payload)
+            return 'req created<br><a href="/">Back to page</a>'
+
+        elif task == 'mark-delivered':
+            print('handle_user_dashboard: form data dump of task "mark-delivered"> ' + str(dict(request.form)))
+            db_man.user_mark_delivered(receive_req_id=request.form.get('pk_rid'))
+            return 'marked delivered<br><a href="/">Back to page</a>'
 
     uid = session['user_info']['uid']
     return render_template('user_dashboard.html', payload=db_man.get_users_requests(uid=uid))
 
 
-@app.route('/volunteer_dashboard')
+@app.route('/volunteer_dashboard', methods=['GET', 'POST'])
 def handle_volunteer_dashboard():
     """Homepage for volunteers"""
-    return 'Hello Volunteer!'
+    if request.method == 'POST':
+        print('handle_volunteer_dashboard: connect open request > form data dump >')
+        payload = dict(request.form)
+        print(payload)
+
+        if payload.get('task') == 'connect-open-requests':
+            if payload.get('pk_rid_donate') and payload.get('pk_rid_receive'):
+                db_man.connect_user_requests(
+                    volunteer_uid=session['user_info']['uid'],
+                    donor_req_id=payload.get('pk_rid_donate'),
+                    receive_req_id=payload.get('pk_rid_receive')
+                )
+                return 'Done!<br><a href="/">Back to page</a>'
+            else:
+                print('invalid request! insufficient arguments to process the request. need two ids (req & donate)')
+
+    return render_template('volunteer_dashboard.html', payload=db_man.get_users_requests())
 
 
 @app.route('/super_admin')

@@ -1,13 +1,42 @@
 body {
   height: 100vh;
 }
-body details#open-list > summary {
+body details {
+  margin-top: 2rem;
+}
+body details > summary {
   padding: 4px;
   width: 200px;
   background-color: #eeeeee;
   border: none;
   box-shadow: 1px 1px 2px #bbbbbb;
   cursor: pointer;
+}
+body details .header {
+  border-top: 2px solid #000;
+  border-bottom: 2px solid #000;
+}
+body details .row {
+  border-bottom: 1px solid #111;
+}
+body details .row span, body details .header span {
+  display: block;
+  border-right: 1px solid #111;
+}
+body details .row span:nth-child(1), body details .header span:nth-child(1) {
+  width: 18rem;
+}
+body details .row span:nth-child(2), body details .header span:nth-child(2) {
+  width: 6rem;
+}
+body details .row span:nth-child(3), body details .header span:nth-child(3) {
+  width: 3rem;
+}
+body details .row span:nth-child(4), body details .header span:nth-child(4) {
+  width: 10rem;
+}
+body details .row span:nth-child(5), body details .header span:nth-child(5) {
+  width: 6rem;
 }
 
 .full-popup {
