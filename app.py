@@ -132,6 +132,11 @@ def handle_user_dashboard():
 @app.route('/volunteer_dashboard', methods=['GET', 'POST'])
 def handle_volunteer_dashboard():
     """Homepage for volunteers"""
+
+    user_type = session['user_info']['user_type']
+    if user_type not in ['super_admin', 'volunteer']:
+        return 'You dont have permission to view this page!<br><a href="/">Back Home</a>'
+
     if request.method == 'POST':
         print('handle_volunteer_dashboard: connect open request > form data dump >')
         payload = dict(request.form)
@@ -154,6 +159,11 @@ def handle_volunteer_dashboard():
 @app.route('/super_admin')
 def handle_super_admin():
     """Homepage for super admins"""
+
+    user_type = session['user_info']['user_type']
+    if user_type != 'super_admin':
+        return 'You dont have permission to view this page!<br><a href="/">Back Home</a>'
+
     return 'Hello Super Man!'
 
 
