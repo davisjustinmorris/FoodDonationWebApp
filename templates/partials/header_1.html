@@ -1,7 +1,18 @@
 <nav class="fx main-styles">
     <div class="logo"></div>
     <div class="fx-spacer"></div>
-    <ul class="nav list-lsn">
+    <ul class="nav list-lsn fx">
+        <li><a href="/">Home</a></li>
+
+        {% if user_type == 'volunteer' or user_type == 'super_admin' %}
+        <li><a href="/volunteer_dashboard">Volunteer</a></li>
+        {% endif %}
+
+        {% if user_type == 'super_admin' %}
+        <li><a href="/admin_dashboard">Admin</a></li>
+        {% endif %}
+
+        <li class="user_type"><span>Role: {{ user_type }}</span></li>
         <li><a href="/logout">logout</a></li>
     </ul>
 </nav>

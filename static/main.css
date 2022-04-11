@@ -35,5 +35,11 @@ body nav.main-styles {
   align-self: stretch;
   padding: 1rem 2rem;
 }
+body nav.main-styles ul li:not(:first-child, :last-child) {
+  padding: 0 1rem;
+}
+body nav.main-styles li.user_type {
+  margin-left: 1.5rem;
+}
 
 /*# sourceMappingURL=main.css.map */

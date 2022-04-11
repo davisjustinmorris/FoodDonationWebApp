@@ -126,7 +126,11 @@ def handle_user_dashboard():
             return 'Review added<br><a href="/">Back to page</a>'
 
     uid = session['user_info']['uid']
-    return render_template('user_dashboard.html', payload=db_man.get_users_requests(uid=uid))
+    return render_template(
+        'user_dashboard.html',
+        payload=db_man.get_users_requests(uid=uid),
+        user_type=session['user_info']['user_type']
+    )
 
 
 @app.route('/volunteer_dashboard', methods=['GET', 'POST'])
@@ -153,7 +157,11 @@ def handle_volunteer_dashboard():
             else:
                 print('invalid request! insufficient arguments to process the request. need two ids (req & donate)')
 
-    return render_template('volunteer_dashboard.html', payload=db_man.get_users_requests())
+    return render_template(
+        'volunteer_dashboard.html',
+        payload=db_man.get_users_requests(),
+        user_type=session['user_info']['user_type']
+    )
 
 
 @app.route('/super_admin')
