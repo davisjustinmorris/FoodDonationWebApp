@@ -116,6 +116,15 @@ def handle_user_dashboard():
             db_man.user_mark_delivered(receive_req_id=request.form.get('pk_rid'))
             return 'marked delivered<br><a href="/">Back to page</a>'
 
+        elif task == 'submit-feedback':
+            print('handle_user_dashboard: form data dump of task "submit-feedback"> ' + str(dict(request.form)))
+            db_man.user_put_review(
+                request.form.get('req_id'),
+                request.form.get('rating_value'),
+                request.form.get('review')
+            )
+            return 'Review added<br><a href="/">Back to page</a>'
+
     uid = session['user_info']['uid']
     return render_template('user_dashboard.html', payload=db_man.get_users_requests(uid=uid))
 

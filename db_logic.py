@@ -210,3 +210,21 @@ class DbManager:
         conn.executemany(query_mark_delivered, [('delivered', donate_req_id), ('delivered', receive_req_id)])
         conn.commit()
         conn.close()
+
+    def user_put_review(self, req_id, rating, review):
+        query_put_review = "UPDATE request_table " \
+                           "SET review_rating=?, review_feedback=?, request_status='reviewed' " \
+                           "WHERE pk_rid=?"
+        conn = self.connection_provider()
+        conn.execute(query_put_review, (rating, review, req_id))
+
+        query_get_req_pair_id = "SELECT fk_rid_donate FROM matched_request_map WHERE fk_rid_receive=?"
+        rid_donate_tuple = conn.execute(query_get_req_pair_id, (req_id,)).fetchone()
+        assert rid_donate_tuple, "Deadblock! pair req_id should be present"
+
+        query_mark_reviewed = "UPDATE request_table SET request_status='reviewed' WHERE pk_rid=?"
+        conn.execute(query_mark_reviewed, rid_donate_tuple)
+
+        conn.commit()
+        conn.close()
+

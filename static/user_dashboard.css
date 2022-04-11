@@ -50,12 +50,17 @@ body details .row span:nth-child(5), body details .header span:nth-child(5) {
 .full-popup:not(.active) {
   display: none;
 }
-.full-popup #request-form {
-  width: 20vw;
-  min-width: 14rem;
+.full-popup form {
   background: #FFFFFF;
   padding: 1rem;
   border-radius: 3px;
+}
+.full-popup form:not(.active) {
+  display: none;
+}
+.full-popup #request-form {
+  width: 20vw;
+  min-width: 14rem;
 }
 .full-popup #request-form > :not(:first-child), .full-popup #request-form > :nth-child(4) > * {
   margin: 3px 0;

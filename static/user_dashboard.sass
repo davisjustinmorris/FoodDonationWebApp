@@ -42,12 +42,16 @@ body
   &:not(.active)
     display: none
 
-  #request-form
-    width: 20vw
-    min-width: 14rem
+  form
     background: #FFFFFF
     padding: 1rem
     border-radius: 3px
+    &:not(.active)
+      display: none
+
+  #request-form
+    width: 20vw
+    min-width: 14rem
 
     > :not(:first-child), > :nth-child(4) > *
       margin: 3px 0

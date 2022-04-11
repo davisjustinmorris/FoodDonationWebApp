@@ -14,14 +14,14 @@
 <body class="fx fdc aifs">
     {% include 'partials/header_1.html' %}
 
-    <button id="btn-create-request" onclick="$('#request-form').parent().toggleClass('active')" type="button">
+    <button id="btn-create-request" onclick="show_request_form()" type="button">
         Create Request
     </button>
 
     <div id="full-popup" class="fx fdc jcc aic full-popup">
         <form id="request-form" class="fx fdc" method="post" action="/dashboard">
             <h2 class="fx-asc">create request</h2>
-            <input type="hidden" name="task" value="create-task">
+            <input type="hidden" name="task" value="create-request">
 
             <div class="fx">
                 <span>Req Type: </span>
@@ -49,6 +49,25 @@
                 <textarea name="location_as_address" cols="30" rows="7" placeholder="Delivery Address"></textarea>
             </div>
             <input type="submit" value="Create">
+        </form>
+
+        <form id="feedback-form" class="fx fdc" method="post" action="/dashboard">
+            <h2 class="fx-asc">Submit Feedback</h2>
+            <input type="hidden" name="task" value="submit-feedback">
+            <input type="hidden" name="req_id">
+
+            <div class="fx">
+                <span>Rating: </span>
+                <input type="radio" name="rating_value" value="1">
+                <input type="radio" name="rating_value" value="2">
+                <input type="radio" name="rating_value" value="3">
+                <input type="radio" name="rating_value" value="4">
+                <input type="radio" name="rating_value" value="5">
+            </div>
+
+            <textarea name="review" id="" cols="20" rows="10" placeholder="Review"></textarea>
+
+            <input type="submit" value="Submit Feedback">
         </form>
     </div>
 
@@ -116,7 +135,9 @@
             <span>{{ request.req_qty_in_person }}x</span>
             <span>{{ request.created_ts }}</span>
             <span>{{ "Donate" if request.is_donate_req == 1 else "Receive" }}</span>
-            <button value="{{ request.pk_rid }}">Provide Feedback</button>
+            {% if not request.is_donate_req %}
+            <button value="{{ request.pk_rid }}" onclick="show_feedback_form(this)">Provide Feedback</button>
+            {% endif %}
         </div>
         {% endfor %}
     </details>
