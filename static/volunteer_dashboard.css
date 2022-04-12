@@ -1,3 +1,6 @@
+form {
+  margin: 1.5rem;
+}
 form details {
   margin-top: 2rem;
 }
@@ -13,14 +16,19 @@ form details .header {
   border-top: 2px solid #000;
   border-bottom: 2px solid #000;
 }
+form details .header span {
+  font-weight: bold;
+}
 form details .row {
   border-bottom: 1px solid #111;
 }
 form details .row span, form details .header span {
   display: block;
-}
-form details .row span, form details .row input[type=radio], form details .header span, form details .header input[type=radio] {
+  padding: 3px 5px;
   border-right: 1px solid #111;
+}
+form details .row span:first-child, form details .header span:first-child {
+  border-left: 1px solid #111;
 }
 form details .row span:nth-child(1), form details .row input[type=radio]:nth-child(1), form details .header span:nth-child(1), form details .header input[type=radio]:nth-child(1) {
   width: 1.5rem;
@@ -38,7 +46,14 @@ form details .row span:nth-child(5), form details .row input[type=radio]:nth-chi
   width: 10rem;
 }
 form button[type=submit] {
-  margin-top: 3rem;
+  border: 1px solid green;
+  background-color: lightgreen;
+  margin: 2rem 2rem 2rem 0;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=volunteer_dashboard.css.map */
