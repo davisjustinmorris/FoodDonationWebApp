@@ -151,6 +151,8 @@
             <span>Qty</span>
             <span>DateTime</span>
             <span>Request Type</span>
+            <span>Rating</span>
+            <span>Review</span>
         </div>
         {% for request in payload.reviewed %}
         <div class="row fx">
@@ -159,6 +161,8 @@
             <span>{{ request.req_qty_in_person }}x</span>
             <span>{{ request.created_ts }}</span>
             <span>{{ "Donate" if request.is_donate_req == 1 else "Receive" }}</span>
+            <span>{{ request.review_rating if request.review_rating else '' }}</span>
+            <span>{{ request.review_feedback | safe if request.review_feedback else ''}}</span>
         </div>
         {% endfor %}
     </details>

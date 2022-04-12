@@ -21,10 +21,12 @@ body
     .row
       border-bottom: 1px solid #111
     .row, .header
+      border-right: 1px solid #111
       span
         display: block
         padding: 3px 5px
-        border-right: 1px solid #111
+        &:not(:last-child)
+          border-right: 1px solid #111
         &:first-child
           border-left: 1px solid #111
         &:nth-child(1)
@@ -37,6 +39,8 @@ body
           width: 10rem
         &:nth-child(5)
           width: 6rem
+        &:nth-child(6)
+          width: 3rem
 
 
 .full-popup
