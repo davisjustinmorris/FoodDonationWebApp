@@ -164,7 +164,7 @@ def handle_volunteer_dashboard():
     )
 
 
-@app.route('/super_admin')
+@app.route('/super_admin', methods=['GET', 'POST'])
 def handle_super_admin():
     """Homepage for super admins"""
 
@@ -172,7 +172,29 @@ def handle_super_admin():
     if user_type != 'super_admin':
         return 'You dont have permission to view this page!<br><a href="/">Back Home</a>'
 
-    return 'Hello Super Man!'
+    if request.method == 'POST':
+        task = request.form.get('task')
+        target_user_list = request.form.getlist('pk_uid')
+
+        print('handle_super_admin: form data dump >')
+        payload = dict(request.form)
+        print(payload)
+        print('user_list: ' + str(target_user_list))
+
+        if task in ['add-to-volunteers', 'remove-from-volunteers']:
+            as_volunteer = task == 'add-to-volunteers'
+            db_man.super_admin__edit_type_volunteers(
+                user_list=target_user_list,
+                as_volunteer=as_volunteer
+            )
+        else:
+            return
+
+    return render_template(
+        'super_admin.html',
+        payload={'users': db_man.super_admin__get_users()},
+        user_type=session['user_info']['user_type']
+    )
 
 
 @app.route('/logout')

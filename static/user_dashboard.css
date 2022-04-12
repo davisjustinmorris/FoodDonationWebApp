@@ -1,6 +1,9 @@
 body {
   height: 100vh;
 }
+body h2.title_my_req {
+  margin-top: 2rem;
+}
 body details {
   margin-top: 2rem;
 }

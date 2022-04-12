@@ -3,8 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <script src="{{ url_for('static', filename='jquery-3.6.0.js') }}"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='super_admin.css') }}">
+    <script src="{{ url_for('static', filename='super_admin.js') }}"></script>
 </head>
-<body>
+<body class="fx fdc aifs">
+    {% include 'partials/header_1.html' %}
+
+    {% if payload.users %}
+    <form id="normal-users-form" action="/super_admin" method="post">
+        <h2>Normal Users</h2>
+        <input type="hidden" name="task" value="add-to-volunteers">
+
+        <div class="header fx">
+            <span></span>
+            <span>Name</span>
+            <span>Email</span>
+            <span>Contact</span>
+            <span>Address</span>
+        </div>
+        {% for user in payload.users  if not user.is_volunteer and not user.is_super_admin %}
+        <div class="row fx">
+            <span class="fx aic" style="display: flex;">
+                <input type="checkbox" name="pk_uid" value="{{ user.pk_uid }}">
+            </span>
+            <span>{{ user.name }}</span>
+            <span>{{ user.email }}</span>
+            <span>{{ user.phone }}</span>
+            <span>{{ user.address }}</span>
+        </div>
+        {% endfor %}
+
+        <button type="submit">Add to Volunteers</button>
+
+    </form>
+
+
+    <form id="volunteer-users-form" action="/super_admin" method="post">
+        <h2>Volunteers Users</h2>
+        <input type="hidden" name="task" value="remove-from-volunteers">
+
+        <div class="header fx">
+            <span></span>
+            <span>Name</span>
+            <span>Email</span>
+            <span>Contact</span>
+            <span>Address</span>
+        </div>
+        {% for user in payload.users  if user.is_volunteer and not user.is_super_admin %}
+        <div class="row fx">
+            <span class="fx aic" style="display: flex;">
+                <input type="checkbox" name="pk_uid" value="{{ user.pk_uid }}">
+            </span>
+            <span>{{ user.name }}</span>
+            <span>{{ user.email }}</span>
+            <span>{{ user.phone }}</span>
+            <span>{{ user.address }}</span>
+        </div>
+        {% endfor %}
+
+        <button type="submit">Remove from Volunteers</button>
+
+    </form>
+    {% endif %}
 
 </body>
 </html>

@@ -228,3 +228,37 @@ class DbManager:
         conn.commit()
         conn.close()
 
+    def super_admin__get_users(self):
+        query = "SELECT pk_uid, email, password, name, is_volunteer, is_super_admin, session_token, phone, address " \
+                "FROM user_table"
+
+        conn = self.connection_provider()
+        fetch_result_list = conn.execute(query).fetchall()
+        conn.close()
+        
+        kv_fetch_result_list = [
+            {
+                'pk_uid': user[0],
+                'email': user[1],
+                'password': user[2],
+                'name': user[3],
+                'is_volunteer': user[4],
+                'is_super_admin': user[5],
+                'session_token': user[6],
+                'phone': user[7],
+                'address': user[8],
+            }
+            for user in fetch_result_list
+        ]
+        return kv_fetch_result_list
+
+    def super_admin__edit_type_volunteers(self, user_list, as_volunteer):
+        query_modify_is_volunteer = "UPDATE user_table " \
+                                    "SET is_volunteer=? " \
+                                    "WHERE pk_uid=?"
+        params = [(1 if as_volunteer else 0, uid) for uid in user_list]
+
+        conn = self.connection_provider()
+        conn.executemany(query_modify_is_volunteer, params)
+        conn.commit()
+        conn.close()

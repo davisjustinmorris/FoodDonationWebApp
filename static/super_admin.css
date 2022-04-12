@@ -1,0 +1,37 @@
+form {
+  margin-bottom: 3rem;
+}
+form .header {
+  margin-top: 1.5rem;
+  border-top: 2px solid #000;
+  border-bottom: 2px solid #000;
+}
+form .row {
+  border-bottom: 1px solid #111;
+}
+form .row span, form .header span {
+  display: block;
+}
+form .row span, form .row input[type=checkbox], form .header span, form .header input[type=checkbox] {
+  border-right: 1px solid #111;
+}
+form .row span:nth-child(1), form .row input[type=checkbox]:nth-child(1), form .header span:nth-child(1), form .header input[type=checkbox]:nth-child(1) {
+  width: 1.5rem;
+}
+form .row span:nth-child(2), form .row input[type=checkbox]:nth-child(2), form .header span:nth-child(2), form .header input[type=checkbox]:nth-child(2) {
+  width: 15rem;
+}
+form .row span:nth-child(3), form .row input[type=checkbox]:nth-child(3), form .header span:nth-child(3), form .header input[type=checkbox]:nth-child(3) {
+  width: 12rem;
+}
+form .row span:nth-child(4), form .row input[type=checkbox]:nth-child(4), form .header span:nth-child(4), form .header input[type=checkbox]:nth-child(4) {
+  width: 7rem;
+}
+form .row span:nth-child(5), form .row input[type=checkbox]:nth-child(5), form .header span:nth-child(5), form .header input[type=checkbox]:nth-child(5) {
+  width: 15rem;
+}
+form button[type=submit] {
+  margin-top: 2rem;
+}
+
+/*# sourceMappingURL=super_admin.css.map */
