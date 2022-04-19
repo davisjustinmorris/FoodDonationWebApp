@@ -51,6 +51,7 @@ def handle_login():
         is_volunteer = 1 if request.form.get('is_volunteer') else 0
         phone = request.form.get('phone')
         address = request.form.get('address')
+        interested_in_volunteering = 1 if request.form.get('interested_in_volunteering') else 0
 
         if task == 'login':
             login_result = db_man.put_login_session(email=user_email, pwd=user_password)
@@ -61,8 +62,10 @@ def handle_login():
                 return render_template('login.html', refresh_message="Login failed!")
 
         elif task == 'signup':
-            signup_result = db_man.add_login_info(email=user_email, pwd=user_password, name=user_name,
-                                                  is_vol=is_volunteer, phone=phone, address=address)
+            signup_result = db_man.add_login_info(
+                email=user_email, pwd=user_password, name=user_name, is_vol=is_volunteer, phone=phone, address=address,
+                interested_in_volunteering=interested_in_volunteering
+            )
             if signup_result.get('status'):
                 refresh_message = "Signup successful! Login to your account"
             else:
@@ -84,18 +87,6 @@ def handle_login():
 def handle_user_dashboard():
     """Homepage of users"""
     if request.method == 'POST':
-        # fk_creator_uid                    - check
-        # created_ts                        - check
-        # last_updated_ts                   - not required
-        # request_status                    - check
-        # review_rating                     - not required
-        # review_feedback                   - not required
-        # fk_handled_vol_id                 - not required
-        # is_donate_req                     - check
-        # req_qty_in_person                 - check
-        # contact_details_same_as_user      - check
-        # contact_phone                     - check
-        # location_as_address               - check
         task = request.form.get('task')
 
         if task == 'create-request':

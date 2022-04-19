@@ -79,16 +79,17 @@ class DbManager:
         conn.commit()
         conn.close()
 
-    def add_login_info(self, email, pwd, name, is_vol, phone, address):
+    def add_login_info(self, email, pwd, name, is_vol, phone, address, interested_in_volunteering):
         """Signup"""
-        query_insert = "INSERT INTO user_table (email, password, name, is_volunteer, phone, address) " \
-                       "VALUES (?,?,?,?,?,?)"
+        query_insert = "INSERT INTO user_table " \
+                       "(email, password, name, is_volunteer, phone, address, interested_in_volunteering) " \
+                       "VALUES (?,?,?,?,?,?,?)"
         query_check_email = "SELECT pk_uid, name FROM user_table WHERE email=?"
 
         conn = self.connection_provider()
         email_exists = conn.execute(query_check_email, (email,)).fetchone()
         if not email_exists:
-            conn.execute(query_insert, (email, pwd, name, is_vol, phone, address))
+            conn.execute(query_insert, (email, pwd, name, is_vol, phone, address, interested_in_volunteering))
             conn.commit()
             conn.close()
             return {'status': True}
@@ -229,7 +230,8 @@ class DbManager:
         conn.close()
 
     def super_admin__get_users(self):
-        query = "SELECT pk_uid, email, password, name, is_volunteer, is_super_admin, session_token, phone, address " \
+        query = "SELECT pk_uid, email, password, name, is_volunteer, is_super_admin, session_token, " \
+                "phone, address, interested_in_volunteering " \
                 "FROM user_table"
 
         conn = self.connection_provider()
@@ -247,6 +249,7 @@ class DbManager:
                 'session_token': user[6],
                 'phone': user[7],
                 'address': user[8],
+                'interested_in_volunteering': user[9],
             }
             for user in fetch_result_list
         ]

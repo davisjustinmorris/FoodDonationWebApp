@@ -24,6 +24,7 @@
             <span>Email</span>
             <span>Contact</span>
             <span>Address</span>
+            <span>Interested in Volunteering</span>
         </div>
         {% for user in payload.users  if not user.is_volunteer and not user.is_super_admin %}
         <div class="row fx">
@@ -34,6 +35,7 @@
             <span>{{ user.email }}</span>
             <span>{{ user.phone }}</span>
             <span>{{ user.address }}</span>
+            <span>{{ 'Yes' if user.interested_in_volunteering else 'No' }}</span>
         </div>
         {% endfor %}
 
@@ -52,6 +54,7 @@
             <span>Email</span>
             <span>Contact</span>
             <span>Address</span>
+            <span>Interested in Volunteering</span>
         </div>
         {% for user in payload.users  if user.is_volunteer and not user.is_super_admin %}
         <div class="row fx">
@@ -62,6 +65,7 @@
             <span>{{ user.email }}</span>
             <span>{{ user.phone }}</span>
             <span>{{ user.address }}</span>
+            <span>{{ 'yes' if user.interested_in_volunteering else 'No' }}</span>
         </div>
         {% endfor %}
 

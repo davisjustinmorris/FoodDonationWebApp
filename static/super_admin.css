@@ -35,6 +35,9 @@ form .row span:nth-child(4), form .row input[type=checkbox]:nth-child(4), form .
 form .row span:nth-child(5), form .row input[type=checkbox]:nth-child(5), form .header span:nth-child(5), form .header input[type=checkbox]:nth-child(5) {
   width: 15rem;
 }
+form .row span:nth-child(6), form .row input[type=checkbox]:nth-child(6), form .header span:nth-child(6), form .header input[type=checkbox]:nth-child(6) {
+  width: 13rem;
+}
 form button[type=submit] {
   margin: 2rem 2rem 2rem 0;
   padding: 0.5rem 1rem;
