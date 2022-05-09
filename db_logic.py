@@ -126,10 +126,10 @@ class DbManager:
         conn.commit()
         conn.close()
 
-    def get_users_requests(self, uid=None, limit=20, active=True, state='created'):
+    def get_users_requests(self, uid=None, limit=None, active=True, state='created'):
         get_query = "SELECT pk_rid, fk_creator_uid, created_ts, last_updated_ts, request_status, " \
                     "review_rating, review_feedback, fk_handled_vol_id, is_donate_req, req_qty_in_person, " \
-                    "contact_details_same_as_user, contact_phone, location_as_address, ut.phone, ut.address " \
+                    "contact_details_same_as_user, contact_phone, location_as_address, ut.phone, ut.address, ut.name " \
                     "FROM request_table " \
                     "LEFT JOIN user_table ut ON ut.pk_uid = request_table.fk_creator_uid "
         query_args = list()
@@ -160,7 +160,8 @@ class DbManager:
                 'contact_phone': item[11],
                 'location_as_address': item[12],
                 'ut_contact_phone': item[13],
-                'ut_address': item[14]
+                'ut_address': item[14],
+                'user_name': item[15]
             }
             for item in get_result
         ]
@@ -173,7 +174,8 @@ class DbManager:
             'created': [],
             'confirmed': [],
             'delivered': [],
-            'reviewed': []
+            'reviewed': [],
+            'all': result_obj_list
         }
         for item in result_obj_list:
             status = item.get('request_status')

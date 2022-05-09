@@ -1,0 +1,56 @@
+<div class="all-tickets">
+    <div class="row header">
+        <div class="filters row">
+            <span>Filters:</span>
+            <label><input type="checkbox" name="created" checked><span>Created</span></label>
+            <label><input type="checkbox" name="confirmed" checked><span>Confirmed</span></label>
+            <label><input type="checkbox" name="delivered" checked><span>Delivered</span></label>
+            <label><input type="checkbox" name="reviewed" checked><span>Reviewed</span></label>
+        </div>
+    </div>
+    <div class="request-card-container">
+        {% for request in payload.all %}
+            <div class="request-card {{ request.request_status }}">
+                <div class="col top">
+                    <div class="row">
+                        <span><i class="fa fa-clock-o"></i>{{ request.created_ts }}</span>
+                    </div>
+                </div>
+                <div class="row mid">
+                    <div class="col">
+                    <span>
+                        {% if request.is_donate_req == 1 %}
+                            <i class="fa fa-long-arrow-right"></i><span>Donate</span>
+                        {% else %}
+                            <i class="fa fa-long-arrow-left"></i><span>Receive</span>
+                        {% endif %}
+                    </span>
+                    <span>
+                        <input type="hidden" name="request_status" value="{{ request.request_status }}">
+                        <i class="fa fa-retweet"></i>{{ request.request_status.capitalize() }}
+                    </span>
+                    <span>
+                        <i class="fa fa-cutlery"></i>({{ request.req_qty_in_person }}x) {{ "Veg" if request.is_veg == 1 else "N/Veg" }}</span>
+                    </div>
+                    <div class="col">
+                        <span><i class="fa fa-user"></i>{{ request.user_name }}</span>
+                        <span><i class="fa fa-phone"></i>{{ request.this_contact_phone }}</span>
+                        <span style="max-width: 10rem"><i
+                                class="fa fa-home"></i>{{ request.this_contact_address }}</span>
+                    </div>
+                </div>
+                <div class="row bottom">
+                    {% if request.review_rating %}
+                        <span><i class="fa fa-star"></i>{{ request.review_rating }}</span>
+                    {% endif %}
+                    {% if request.review_feedback %}
+                        <span>
+                        <i class="fa fa-comments-o"></i>
+                        {{ request.review_feedback | safe }}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

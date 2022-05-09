@@ -1,7 +1,57 @@
-form
+body > form
   margin: 1.5rem
-  details
+  button[type='submit']
+    border: 1px solid green
+    background-color: lightgreen
+    margin: 2rem 2rem 2rem 0
+    padding: 0.5rem 1rem
+    font-size: 0.9rem
+    font-weight: 500
+    border-radius: 5px
+    cursor: pointer
+
+details#receive-list, details#donate-list
+  margin-top: 2rem
+  > summary
+    padding: 4px
+    width: 200px
+    background-color: #eeeeee
+    border: none
+    box-shadow: 1px 1px 2px #bbbbbb
+    cursor: pointer
+  .header
+    border-top: 2px solid #000
+    border-bottom: 2px solid #000
+    span
+      font-weight: bold
+  .row
+    border-bottom: 1px solid #111
+  .row, .header
+    span
+      display: block
+      padding: 3px 5px
+      border-right: 1px solid #111
+      &:first-child
+        border-left: 1px solid #111
+    span, input[type='radio']
+      &:nth-child(1)
+        width: 1.5rem
+      &:nth-child(2)
+        width: 18rem
+      &:nth-child(3)
+        width: 6rem
+      &:nth-child(4)
+        width: 3rem
+      &:nth-child(5)
+        width: 10rem
+
+
+div
+  &#all-list
     margin-top: 2rem
+    width: 90rem
+    display: flex
+    flex-direction: column
     > summary
       padding: 4px
       width: 200px
@@ -16,31 +66,33 @@ form
         font-weight: bold
     .row
       border-bottom: 1px solid #111
+      span
+        overflow: hidden
+        text-overflow: ellipsis
     .row, .header
+      border-right: 1px solid #111
       span
         display: block
         padding: 3px 5px
-        border-right: 1px solid #111
+        &:not(:last-child)
+          border-right: 1px solid #111
         &:first-child
           border-left: 1px solid #111
-      span, input[type='radio']
         &:nth-child(1)
           width: 1.5rem
         &:nth-child(2)
-          width: 18rem
+          width: 8rem
         &:nth-child(3)
-          width: 6rem
+          width: 14rem
         &:nth-child(4)
-          width: 3rem
+          width: 6rem
         &:nth-child(5)
+          width: 3rem
+        &:nth-child(6)
           width: 10rem
-
-  button[type='submit']
-    border: 1px solid green
-    background-color: lightgreen
-    margin: 2rem 2rem 2rem 0
-    padding: 0.5rem 1rem
-    font-size: 0.9rem
-    font-weight: 500
-    border-radius: 5px
-    cursor: pointer
+        &:nth-child(7)
+          width: 6rem
+        &:nth-child(8)
+          width: 7rem
+        &:nth-child(9)
+          width: 3rem

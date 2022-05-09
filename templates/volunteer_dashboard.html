@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <title>Title</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <script src="{{ url_for('static', filename='jquery-3.6.0.js') }}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='volunteer_dashboard.css') }}">
     <script src="{{ url_for('static', filename='volunteer_dashboard.js') }}"></script>
@@ -39,9 +42,7 @@
             </div>
             {% endfor %}
         </details>
-        {% endif %}
-    
-        {% if payload.created %}
+
         <details id="receive-list">
             <summary>Receive Requests</summary>
             <div class="header fx">
@@ -68,36 +69,39 @@
         <button type="submit">Connect Selected Requests</button>
     </form>
 
-{#    {% if payload.confirmed %}#}
-{#    <details id="confirmed-list">#}
-{#        <summary>Confirmed Requests</summary>#}
-{#        {% for request in payload.confirmed %}#}
+    <h2 class="all-tickets">All Tickets</h2>
+    {% include 'partials/all_tickets.html' %}
+    
+{#    <div id="all-list">#}
+{#        <h2>All Tickets</h2>#}
+{#        <div class="header fx">#}
+{#            <span></span>#}
+{#            <span>Name</span>#}
+{#            <span>Address</span>#}
+{#            <span>Contact</span>#}
+{#            <span>Qty</span>#}
+{#            <span>DateTime</span>#}
+{#            <span>Request Type</span>#}
+{#            <span>Request Status</span>#}
+{#            <span>Rating</span>#}
+{#            <span>Review</span>#}
+{#        </div>#}
+{#        {% for request in payload.all %}#}
 {#        <div class="row fx">#}
+{#            <span class="fx aic" style="display: flex;">#}
+{#                <input type="radio" name="pk_rid_receive" value="{{ request.pk_rid }}">#}
+{#            </span>#}
+{#            <span>{{ request.user_name }}</span>#}
+{#            <span>{{ request.this_contact_address }}</span>#}
+{#            <span>{{ request.this_contact_phone }}</span>#}
+{#            <span>{{ request.req_qty_in_person }}x</span>#}
 {#            <span>{{ request.created_ts }}</span>#}
-{#            <span>{{ request.req_qty_in_person }}</span>#}
+{#            <span>{{ "Donate" if request.is_donate_req == 1 else "Receive" }}</span>#}
+{#            <span>{{ request.request_status.capitalize() }}</span>#}
+{#            <span>{{ request.review_rating if request.review_rating else '' }}</span>#}
+{#            <span>{{ request.review_feedback | safe if request.review_feedback else ''}}</span>#}
 {#        </div>#}
 {#        {% endfor %}#}
-{#    </details>#}
-{#    {% endif %}#}
-{##}
-{#    {% if payload.delivered %}#}
-{#    <details id="delivered-list">#}
-{#        <summary>Delivered Requests</summary>#}
-{#        {% for request in payload.delivered %}#}
-{#            <span>{{ request.created_ts }}</span>#}
-{#            <span>{{ request.req_qty_in_person }}</span>#}
-{#        {% endfor %}#}
-{#    </details>#}
-{#    {% endif %}#}
-{##}
-{#    {% if payload.reviewed %}#}
-{#    <details id="reviewed-list">#}
-{#        <summary>Reviewed Requests</summary>#}
-{#        {% for request in payload.reviewed %}#}
-{#            <span>{{ request.created_ts }}</span>#}
-{#            <span>{{ request.req_qty_in_person }}</span>#}
-{#        {% endfor %}#}
-{#    </details>#}
-{#    {% endif %}#}
+{#    </div>#}
 </body>
 </html>
