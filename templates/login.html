@@ -14,11 +14,17 @@
 <body class="fx fdc jcc aic">
     <form id="login" method="post" action="login" class="fx fdc active">
         <h3 class="fx-asc">login</h3>
-        <input type="text" name="email" placeholder="email">
-        <input type="password" name="password" placeholder="password">
+        <input type="text" name="email" placeholder="Email">
+        <input type="password" name="password" placeholder="Password">
         <input type="submit" value="login">
 
-        <span class="log_sign">New member? Signup</span>
+        <div class="row divider">
+            <div class="line"></div>
+            <span>OR</span>
+            <div class="line"></div>
+        </div>
+
+        <input type="button" class="log_sign" value="Signup">
 
         <input type="hidden" name="task" value="login">
     </form>
@@ -27,16 +33,22 @@
         <h3 class="fx-asc">signup</h3>
         <input type="text" name="name" placeholder="Name">
         <input type="text" name="email" placeholder="Email">
-        <input type="password" name="password" placeholder="password">
+        <input type="password" name="password" placeholder="Password">
         <input type="text" name="phone" placeholder="Phone">
         <textarea name="address" cols="30" rows="5" placeholder="Address"></textarea>
-        <label>
+        <label class="fx aic">
             <input type="checkbox" name="interested_in_volunteering">
             <span>Interested in volunteering</span>
         </label>
         <input type="submit" value="signup">
 
-        <span class="log_sign">Existing member? Login</span>
+        <div class="row divider">
+            <div class="line"></div>
+            <span>OR</span>
+            <div class="line"></div>
+        </div>
+
+        <input type="button" class="log_sign" value="Login">
 
         <input type="hidden" name="task" value="signup">
     </form>
