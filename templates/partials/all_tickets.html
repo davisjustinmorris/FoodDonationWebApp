@@ -1,13 +1,4 @@
 <div class="all-tickets">
-    <div class="row header">
-        <div class="filters row">
-            <span>Filters:</span>
-            <label><input type="checkbox" name="created" checked><span>Created</span></label>
-            <label><input type="checkbox" name="confirmed" checked><span>Confirmed</span></label>
-            <label><input type="checkbox" name="delivered" checked><span>Delivered</span></label>
-            <label><input type="checkbox" name="reviewed" checked><span>Reviewed</span></label>
-        </div>
-    </div>
     <div class="request-card-container">
         {% for request in payload.all %}
             <div class="request-card {{ request.request_status }}">

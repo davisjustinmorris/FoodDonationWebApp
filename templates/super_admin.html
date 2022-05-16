@@ -13,6 +13,10 @@
 <body class="fx fdc aifs">
     {% include 'partials/header_1.html' %}
 
+    <div class="bg_z_minus">
+        <div class="overlay"></div>
+    </div>
+
     {% if payload.users %}
     <form id="normal-users-form" action="/super_admin" method="post">
         <h2>Normal Users</h2>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>User Home</title>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <script src="{{ url_for('static', filename='jquery-3.6.0.js') }}"></script>
 
@@ -14,9 +15,24 @@
 <body class="fx fdc aifs">
     {% include 'partials/header_1.html' %}
 
-    <button id="btn-create-request" onclick="show_request_form()" type="button">
-        Create Request
-    </button>
+    <div class="bg_z_minus">
+        <div class="overlay"></div>
+    </div>
+
+    <div class="header_controls">
+        <div class="row">
+            <h2 class="title_my_req">My Requests</h2>
+            <button id="btn-create-request" onclick="show_request_form()" type="button">
+                <i class="fa fa-plus-square"></i>
+                <span>Create Request</span>
+            </button>
+        </div>
+        <div class="row">
+            {% include 'partials/ticket_filters.html' %}
+        </div>
+    </div>
+
+    {% include 'partials/all_tickets.html' %}
 
     <div id="full-popup" class="fx fdc jcc aic full-popup">
         <form id="request-form" class="fx fdc" method="post" action="/dashboard">
@@ -82,102 +98,5 @@
             <input type="submit" value="Submit Feedback">
         </form>
     </div>
-
-    <h2 class="title_my_req">My Requests</h2>
-
-    <details id="open-list">
-        <summary>Opened Requests ({{ payload.created | length }})</summary>
-        <div class="header fx">
-            <span>Address</span>
-            <span>Contact</span>
-            <span>Qty</span>
-            <span>DateTime</span>
-            <span>Request Type</span>
-        </div>
-        {% for request in payload.created %}
-        <div class="row fx">
-            <span>{{ request.this_contact_address }}</span>
-            <span>{{ request.this_contact_phone }}</span>
-            <span>{{ request.req_qty_in_person }}x</span>
-            <span>{{ request.created_ts }}</span>
-            <span>{{ "Donate" if request.is_donate_req == 1 else "Receive" }}</span>
-        </div>
-        {% endfor %}
-    </details>
-
-    <details id="confirmed-list">
-        <summary>Confirmed Requests ({{ payload.confirmed | length }})</summary>
-        <div class="header fx">
-            <span>Address</span>
-            <span>Contact</span>
-            <span>Qty</span>
-            <span>DateTime</span>
-            <span>Request Type</span>
-        </div>
-        {% for request in payload.confirmed %}
-        <div class="row fx">
-            <span>{{ request.this_contact_address }}</span>
-            <span>{{ request.this_contact_phone }}</span>
-            <span>{{ request.req_qty_in_person }}x</span>
-            <span>{{ request.created_ts }}</span>
-            <span>{{ "Donate" if request.is_donate_req == 1 else "Receive" }}</span>
-            {% if not request.is_donate_req %}
-            <form action="dashboard" method="post">
-                <input type="hidden" name="task" value="mark-delivered">
-                <input type="hidden" name="pk_rid" value="{{ request.pk_rid }}">
-                <button type="submit">Mark Delivered</button>
-            </form>
-            {% endif %}
-        </div>
-        {% endfor %}
-    </details>
-
-    <details id="delivered-list">
-        <summary>Delivered Requests ({{ payload.delivered | length }})</summary>
-        <div class="header fx">
-            <span>Address</span>
-            <span>Contact</span>
-            <span>Qty</span>
-            <span>DateTime</span>
-            <span>Request Type</span>
-        </div>
-        {% for request in payload.delivered %}
-        <div class="row fx">
-            <span>{{ request.this_contact_address }}</span>
-            <span>{{ request.this_contact_phone }}</span>
-            <span>{{ request.req_qty_in_person }}x</span>
-            <span>{{ request.created_ts }}</span>
-            <span>{{ "Donate" if request.is_donate_req == 1 else "Receive" }}</span>
-            {% if not request.is_donate_req %}
-            <button value="{{ request.pk_rid }}" onclick="show_feedback_form(this)">Provide Feedback</button>
-            {% endif %}
-        </div>
-        {% endfor %}
-    </details>
-
-    <details id="reviewed-list">
-        <summary>Reviewed Requests ({{ payload.reviewed | length }})</summary>
-        <div class="header fx">
-            <span>Address</span>
-            <span>Contact</span>
-            <span>Qty</span>
-            <span>DateTime</span>
-            <span>Request Type</span>
-            <span>Rating</span>
-            <span>Review</span>
-        </div>
-        {% for request in payload.reviewed %}
-        <div class="row fx">
-            <span>{{ request.this_contact_address }}</span>
-            <span>{{ request.this_contact_phone }}</span>
-            <span>{{ request.req_qty_in_person }}x</span>
-            <span>{{ request.created_ts }}</span>
-            <span>{{ "Donate" if request.is_donate_req == 1 else "Receive" }}</span>
-            <span>{{ request.review_rating if request.review_rating else '' }}</span>
-            <span>{{ request.review_feedback | safe if request.review_feedback else ''}}</span>
-        </div>
-        {% endfor %}
-    </details>
-
 </body>
 </html>

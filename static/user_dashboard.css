@@ -1,20 +1,3 @@
-body {
-  height: 100vh;
-}
-body > :not(nav.main-styles) {
-  margin: 1.5rem;
-}
-body #btn-create-request {
-  margin-top: 3rem;
-  padding: 5px 1rem;
-  border-radius: 5px;
-  border-color: dodgerblue;
-  background-color: #52a7fc;
-  cursor: pointer;
-}
-body h2.title_my_req {
-  margin-top: 2rem;
-}
 body details {
   margin-top: 2rem;
 }

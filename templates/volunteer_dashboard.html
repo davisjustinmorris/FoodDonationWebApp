@@ -16,92 +16,86 @@
 <body class="fx fdc aifs">
     {% include 'partials/header_1.html' %}
 
-    <form id="form-connect-open-requests" action="/volunteer_dashboard" method="post">
-        <h2>Open requests</h2>
-        <input type="hidden" name="task" value="connect-open-requests">
-    
-        {% if payload.created %}
-        <details id="donate-list">
-            <summary>Donate Requests</summary>
-            <div class="header fx">
-                <span></span>
-                <span>Address</span>
-                <span>Contact</span>
-                <span>Qty</span>
-                <span>DateTime</span>
-            </div>
-            {% for request in payload.created  if request.is_donate_req %}
-            <div class="row fx">
-                <span class="fx aic" style="display: flex;">
-                    <input type="radio" name="pk_rid_donate" value="{{ request.pk_rid }}">
+
+    <div class="bg_z_minus">
+        <div class="overlay"></div>
+    </div>
+
+
+{#    <form id="form-connect-open-requests" action="/volunteer_dashboard" method="post">#}
+{#        <h2>Open requests</h2>#}
+{#        <input type="hidden" name="task" value="connect-open-requests">#}
+{#    #}
+{#        {% if payload.created %}#}
+{#        <details id="donate-list">#}
+{#            <summary>Donate Requests</summary>#}
+{#            <div class="header fx">#}
+{#                <span></span>#}
+{#                <span>Address</span>#}
+{#                <span>Contact</span>#}
+{#                <span>Qty</span>#}
+{#                <span>DateTime</span>#}
+{#            </div>#}
+{#            {% for request in payload.created  if request.is_donate_req %}#}
+{#            <div class="row fx">#}
+{#                <span class="fx aic" style="display: flex;">#}
+{#                    <input type="radio" name="pk_rid_donate" value="{{ request.pk_rid }}">#}
+{#                </span>#}
+{#                <span>{{ request.this_contact_address }}</span>#}
+{#                <span>{{ request.this_contact_phone }}</span>#}
+{#                <span>{{ request.req_qty_in_person }}x</span>#}
+{#                <span>{{ request.created_ts }}</span>#}
+{#            </div>#}
+{#            {% endfor %}#}
+{#        </details>#}
+{##}
+{#        <details id="receive-list">#}
+{#            <summary>Receive Requests</summary>#}
+{#            <div class="header fx">#}
+{#                <span></span>#}
+{#                <span>Address</span>#}
+{#                <span>Contact</span>#}
+{#                <span>Qty</span>#}
+{#                <span>DateTime</span>#}
+{#            </div>#}
+{#            {% for request in payload.created  if not request.is_donate_req %}#}
+{#            <div class="row fx">#}
+{#                <span class="fx aic" style="display: flex;">#}
+{#                    <input type="radio" name="pk_rid_receive" value="{{ request.pk_rid }}">#}
+{#                </span>#}
+{#                <span>{{ request.this_contact_address }}</span>#}
+{#                <span>{{ request.this_contact_phone }}</span>#}
+{#                <span>{{ request.req_qty_in_person }}x</span>#}
+{#                <span>{{ request.created_ts }}</span>#}
+{#            </div>#}
+{#            {% endfor %}#}
+{#        </details>#}
+{#        {% endif %}#}
+{##}
+{#        <button type="submit">Connect Selected Requests</button>#}
+{#    </form>#}
+
+
+    <div class="header_controls">
+        <div class="row">
+            <h2 class="title_my_req">All Requests</h2>
+
+        </div>
+        <div class="row">
+            {% include 'partials/ticket_filters.html' %}
+        </div>
+        <div class="row">
+            <div id="ticket-filters" class="filters row">
+                <span>Actions:</span>
+                <span>
+                    <i class="fa fa-link" aria-hidden="true"></i>
+                    Connect Selected Tickets
                 </span>
-                <span>{{ request.this_contact_address }}</span>
-                <span>{{ request.this_contact_phone }}</span>
-                <span>{{ request.req_qty_in_person }}x</span>
-                <span>{{ request.created_ts }}</span>
             </div>
-            {% endfor %}
-        </details>
+        </div>
+    </div>
 
-        <details id="receive-list">
-            <summary>Receive Requests</summary>
-            <div class="header fx">
-                <span></span>
-                <span>Address</span>
-                <span>Contact</span>
-                <span>Qty</span>
-                <span>DateTime</span>
-            </div>
-            {% for request in payload.created  if not request.is_donate_req %}
-            <div class="row fx">
-                <span class="fx aic" style="display: flex;">
-                    <input type="radio" name="pk_rid_receive" value="{{ request.pk_rid }}">
-                </span>
-                <span>{{ request.this_contact_address }}</span>
-                <span>{{ request.this_contact_phone }}</span>
-                <span>{{ request.req_qty_in_person }}x</span>
-                <span>{{ request.created_ts }}</span>
-            </div>
-            {% endfor %}
-        </details>
-        {% endif %}
-
-        <button type="submit">Connect Selected Requests</button>
-    </form>
-
-    <h2 class="all-tickets">All Tickets</h2>
     {% include 'partials/all_tickets.html' %}
-    
-{#    <div id="all-list">#}
-{#        <h2>All Tickets</h2>#}
-{#        <div class="header fx">#}
-{#            <span></span>#}
-{#            <span>Name</span>#}
-{#            <span>Address</span>#}
-{#            <span>Contact</span>#}
-{#            <span>Qty</span>#}
-{#            <span>DateTime</span>#}
-{#            <span>Request Type</span>#}
-{#            <span>Request Status</span>#}
-{#            <span>Rating</span>#}
-{#            <span>Review</span>#}
-{#        </div>#}
-{#        {% for request in payload.all %}#}
-{#        <div class="row fx">#}
-{#            <span class="fx aic" style="display: flex;">#}
-{#                <input type="radio" name="pk_rid_receive" value="{{ request.pk_rid }}">#}
-{#            </span>#}
-{#            <span>{{ request.user_name }}</span>#}
-{#            <span>{{ request.this_contact_address }}</span>#}
-{#            <span>{{ request.this_contact_phone }}</span>#}
-{#            <span>{{ request.req_qty_in_person }}x</span>#}
-{#            <span>{{ request.created_ts }}</span>#}
-{#            <span>{{ "Donate" if request.is_donate_req == 1 else "Receive" }}</span>#}
-{#            <span>{{ request.request_status.capitalize() }}</span>#}
-{#            <span>{{ request.review_rating if request.review_rating else '' }}</span>#}
-{#            <span>{{ request.review_feedback | safe if request.review_feedback else ''}}</span>#}
-{#        </div>#}
-{#        {% endfor %}#}
-{#    </div>#}
+
 </body>
 </html>
