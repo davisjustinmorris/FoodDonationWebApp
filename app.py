@@ -3,6 +3,7 @@ import sqlite3
 
 from db_logic import DbManager
 import common_code
+import symbols as sym
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '<didac|ribot>'
@@ -26,14 +27,15 @@ db_man = DbManager(connection_provider=get_db_connection)
 @app.before_request
 def before_each_req():
     if request.endpoint in ['handle_user_dashboard', 'handle_admin_dashboard', 'handle_super_admin']:
-        auth_token = session.get('auth_token')
+        auth_token = session.get('user_info', {}).get('auth_token')
         if auth_token:
             session_check_response = db_man.get_logged_in_account(auth_token=auth_token)
             if session_check_response.get('status'):
                 session['user_info'] = session_check_response['data']
-            else:
-                session.clear()
-                return redirect(url_for('handle_login'))
+                return
+
+        session.clear()
+        return redirect(url_for('handle_login'))
 
 
 @app.route('/')
@@ -73,11 +75,11 @@ def handle_login():
 
             return render_template('login.html', refresh_message=refresh_message)
 
-    if session.get('user_info', {}).get('user_type') == 'normal_user':
+    if session.get('user_info', {}).get('user_type') == sym.UserType.NORMAL_USER:
         return redirect(url_for('handle_user_dashboard'))
-    elif session.get('user_info', {}).get('user_type') == 'volunteer':
+    elif session.get('user_info', {}).get('user_type') == sym.UserType.VOLUNTEER:
         return redirect(url_for('handle_volunteer_dashboard'))
-    elif session.get('user_info', {}).get('user_type') == 'super_admin':
+    elif session.get('user_info', {}).get('user_type') == sym.UserType.SUPER_ADMIN:
         return redirect(url_for('handle_super_admin'))
 
     return render_template('login.html')
@@ -87,11 +89,12 @@ def handle_login():
 def handle_user_dashboard():
     """Homepage of users"""
     if request.method == 'POST':
-        task = request.form.get('task')
+        inbound_data = request.get_json()
 
-        if task == 'create-request':
+        if request.form.get('task') == 'create-request':
             required_form_keys = [
-                'is_donate_req', 'req_qty_in_person', 'contact_details_same_as_user', 'contact_phone', 'location_as_address'
+                'is_donate_req', 'req_qty_in_person', 'contact_details_same_as_user', 'contact_phone',
+                'location_as_address', 'is_veg'
             ]
             payload = {key: request.form.get(key) for key in required_form_keys}
             payload['contact_details_same_as_user'] = 1 if payload['contact_details_same_as_user'] else 0
@@ -102,12 +105,16 @@ def handle_user_dashboard():
             db_man.create_donor_request(payload=payload)
             return 'req created<br><a href="/">Back to page</a>'
 
-        elif task == 'mark-delivered':
-            print('handle_user_dashboard: form data dump of task "mark-delivered"> ' + str(dict(request.form)))
-            db_man.user_mark_delivered(receive_req_id=request.form.get('pk_rid'))
-            return 'marked delivered<br><a href="/">Back to page</a>'
+        elif inbound_data.get('task') == 'mark-confirmed-tickets-delivered':
+            print('handle_user_dashboard: form data dump of task "mark-delivered"> ' + str(inbound_data))
 
-        elif task == 'submit-feedback':
+            if db_man.check_user_authority_and_ticket_state(session['user_info']['uid'], inbound_data.get('payload')):
+                db_man.mark_confirmed_tickets_delivered(inbound_data.get('payload'))
+                return {'success': True}
+
+            return {'success': False, 'err': "Check for user access or condition for ticket state failed!"}
+
+        elif request.form.get('task') == 'submit-feedback':
             print('handle_user_dashboard: form data dump of task "submit-feedback"> ' + str(dict(request.form)))
             db_man.user_put_review(
                 request.form.get('req_id'),
@@ -134,19 +141,15 @@ def handle_volunteer_dashboard():
 
     if request.method == 'POST':
         print('handle_volunteer_dashboard: connect open request > form data dump >')
-        payload = dict(request.form)
-        print(payload)
+        inbound_data = dict(request.get_json())
+        print(inbound_data)
 
-        if payload.get('task') == 'connect-open-requests':
-            if payload.get('pk_rid_donate') and payload.get('pk_rid_receive'):
-                db_man.connect_user_requests(
-                    volunteer_uid=session['user_info']['uid'],
-                    donor_req_id=payload.get('pk_rid_donate'),
-                    receive_req_id=payload.get('pk_rid_receive')
-                )
-                return 'Done!<br><a href="/">Back to page</a>'
-            else:
-                print('invalid request! insufficient arguments to process the request. need two ids (req & donate)')
+        if inbound_data.get('task') == 'connect-open-requests':
+            return db_man.connect_user_requests(session['user_info']['uid'], inbound_data.get('payload'))
+
+        elif inbound_data.get('task') == 'mark-confirmed-tickets-delivered':
+            db_man.mark_confirmed_tickets_delivered(inbound_data.get('payload'))
+            return {'success': True}
 
     return render_template(
         'volunteer_dashboard.html',

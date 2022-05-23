@@ -25,11 +25,15 @@
   margin: 0
   padding: 0
 
+html
+  overflow-y: scroll
+  background-color: #444b58
 body
   padding: 5rem 3rem
   background: #00000000
 
   nav.main-styles
+    z-index: 10
     align-self: stretch
     padding: 1rem 2rem
     background-color: #444b58
@@ -62,7 +66,6 @@ body
     left: 0
     right: 0
     background-image: url(frodo_bg.jpg)
-    //background-size: cover
     background-position: center
     background-size: 700px
     //filter: sepia(0.3) contrast(0.8)
@@ -79,7 +82,6 @@ body
   display: flex
   flex-direction: column
   align-items: stretch
-  align-self: stretch
   align-self: flex-start
   border-radius: 5px
   background: #F0F0F0
@@ -87,17 +89,6 @@ body
   .row
     display: flex
     align-items: center
-    &:nth-child(2)
-      margin: 5px 0 3px
-    &:nth-child(3)
-      span:not(:first-child)
-        margin-left: 5px
-        cursor: pointer
-        transition: all 500ms
-        padding: 1px 3px
-        border-radius: 3px
-        &:hover
-          background-color: rgba(93, 147, 255, 0.44)
 
   h2.title_my_req
     font-size: 2.5rem
@@ -114,15 +105,59 @@ body
       font-size: 1rem
       margin-left: 5px
 
+  #ticket-filters, #ticket-actions
+    > span:first-child
+      font-weight: bold
   #ticket-filters
+    margin: 5px 0 3px
     > span:first-child
       font-weight: bold
     label
       display: flex
       align-items: center
       margin-left: 1rem
+      cursor: pointer
       input
         margin-right: 3px
+  #ticket-actions
+    span:not(:first-child)
+      margin-left: 5px
+      cursor: pointer
+      transition: all 370ms
+      padding: 1px 5px
+      border-radius: 3px
+    .connect
+      &:not(.disabled)
+        &:hover
+          background-color: #dde40990
+      &.disabled
+        cursor: not-allowed
+        background-color: #b6b6b6
+
+    .mark:hover
+        background-color: #0070ba70
+
+  @media (max-width: 650px)
+    align-self: center
+    margin-top: 2rem
+    h2
+      margin-top: 0.8rem
+    .row
+      flex-direction: column
+      align-items: flex-start
+    #btn-create-request
+      margin: .5rem 0
+    #ticket-filters, #ticket-actions
+      margin-bottom: 1rem
+    #ticket-actions
+      span:not(:first-child)
+        margin: 2px 0
+
+
+$status-created-color: #ba3000
+$status-confirmed-color: #b4ba00
+$status-delivered-color: #0070ba
+$status-reviewed-color: #19ba00
 
 div.all-tickets
   display: flex
@@ -136,41 +171,116 @@ div.all-tickets
     display: flex
     flex-direction: column
 
-  .header
-    align-items: center
-    h2
-      margin-left: 1rem
-      margin-right: 2rem
 
   .request-card-container
     display: flex
     flex-wrap: wrap
     margin: 0 -0.5rem
-    .request-card
+    justify-content: space-evenly
+    .request-card-envelop
       display: flex
-      flex-direction: column
-      width: 21rem
+      flex-grow: 1
+      min-width: 21rem
+      max-width: 25rem
+      padding-top: 5px
       border-radius: 5px
-      padding: 10px
-      margin: 0.2rem 0.5rem
+      margin: 0.5rem 0.5rem
+      transition: all 300ms
       box-shadow: 2px 2px 6px 0 #3333
-      background-color: #F0F0F0
-      i.fa
-        margin-right: 5px
-      .col:not(:first-child)
-        margin-left: 1rem
+      &.created
+        background-color: $status-created-color
+      &.confirmed
+        background-color: $status-confirmed-color
+      &.delivered
+        background-color: $status-delivered-color
+      &.reviewed
+        background-color: $status-reviewed-color
+      &:hover
+        box-shadow: 2px 2px 20px 5px #3338
 
-      .mid
-        .col:first-child
-          width: 8rem
-      .bottom
-        margin-top: 5px
-        span
-          &:first-child
-            width: 3rem
-            margin-right: 0.5rem
-          &:last-child
-            display: block
-            overflow: hidden
-            text-overflow: ellipsis
-            white-space: nowrap
+      .request-card
+        display: flex
+        flex-grow: 1
+        border-radius: 5px
+        padding: 20px
+        background-color: #F0F0F0
+        position: relative
+
+        i.fa
+          width: 1.2rem
+          margin-right: 5px
+        a.contact-phone, a.contact-phone:visited
+          text-decoration: none
+          color: unset
+          transition: all 300ms
+          &:hover
+            background-color: rgba(51, 51, 51, 0.27)
+
+        .major
+          flex-grow: 3
+          justify-content: space-between
+          margin-right: 10px
+          > div
+            display: flex
+            flex-direction: column
+            &.top
+              span:first-child
+                font-weight: 800
+                font-size: 1.1rem
+                margin-bottom: 2px
+            &.mid
+              margin: 0.8rem -5px
+              display: flex
+              flex-direction: column
+              align-items: flex-start
+              a.contact-phone
+                padding: 3px 5px
+                border-radius: 3px
+                transition: all 500ms
+                &:hover
+                  i.fa
+                    transform: scale(125%)
+
+        .minor
+          flex-grow: 1
+          max-width: 100px
+          justify-content: space-between
+          .review
+            display: flex
+            align-items: center
+            justify-content: space-between
+            //input[type="checkbox"]
+            //  size: 2rem
+
+          .is-veg
+            margin-right: 3px
+            border: 2px solid
+            width: 1rem
+            height: 1rem
+            display: flex
+            align-items: stretch
+            justify-content: stretch
+            div.circle
+              margin: 0.2rem
+              border-radius: .3rem
+              width: .6rem
+              height: .6rem
+            &.veg
+              border-color: #8FBC8FFF
+              div.circle
+                background-color: #8FBC8FFF
+            &.non-veg
+              border-color: #CD5C5CFF
+              div.circle
+                background-color: #CD5C5CFF
+          .request-status
+            span
+              font-weight: 600
+            &.created span
+              color: $status-created-color
+            &.confirmed span
+              color: $status-confirmed-color
+            &.delivered span
+              color: $status-delivered-color
+            &.reviewed span
+              color: $status-reviewed-color

@@ -1,4 +1,5 @@
 import common_code
+import symbols as sym
 
 
 class DbManager:
@@ -16,11 +17,11 @@ class DbManager:
                 user_id, is_volunteer, is_super_admin = account_info_res
 
                 if is_super_admin:
-                    user_type = "super_admin"
+                    user_type = sym.UserType.SUPER_ADMIN
                 elif is_volunteer:
-                    user_type = "volunteer"
+                    user_type = sym.UserType.VOLUNTEER
                 else:
-                    user_type = "normal_user"
+                    user_type = sym.UserType.NORMAL_USER
 
                 return {
                     'status': True,
@@ -106,8 +107,8 @@ class DbManager:
         query_insert = "INSERT INTO request_table " \
                        "(fk_creator_uid, created_ts, last_updated_ts, request_status, " \
                        "review_rating, review_feedback, fk_handled_vol_id, is_donate_req, req_qty_in_person, " \
-                       "contact_details_same_as_user, contact_phone, location_as_address) " \
-                       "VALUES (?,?,?,?,?,?,?,?,?,?,?,?) "
+                       "contact_details_same_as_user, contact_phone, location_as_address, is_veg) " \
+                       "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) "
         conn = self.connection_provider()
         conn.execute(query_insert, (
             payload.get('fk_creator_uid'),
@@ -121,7 +122,8 @@ class DbManager:
             payload.get('req_qty_in_person'),
             payload.get('contact_details_same_as_user'),
             payload.get('contact_phone'),
-            payload.get('location_as_address')
+            payload.get('location_as_address'),
+            payload.get('is_veg')
         ))
         conn.commit()
         conn.close()
@@ -129,7 +131,8 @@ class DbManager:
     def get_users_requests(self, uid=None, limit=None, active=True, state='created'):
         get_query = "SELECT pk_rid, fk_creator_uid, created_ts, last_updated_ts, request_status, " \
                     "review_rating, review_feedback, fk_handled_vol_id, is_donate_req, req_qty_in_person, " \
-                    "contact_details_same_as_user, contact_phone, location_as_address, ut.phone, ut.address, ut.name " \
+                    "contact_details_same_as_user, contact_phone, location_as_address, ut.phone, ut.address, ut.name, " \
+                    "is_veg " \
                     "FROM request_table " \
                     "LEFT JOIN user_table ut ON ut.pk_uid = request_table.fk_creator_uid "
         query_args = list()
@@ -161,7 +164,8 @@ class DbManager:
                 'location_as_address': item[12],
                 'ut_contact_phone': item[13],
                 'ut_address': item[14],
-                'user_name': item[15]
+                'user_name': item[15],
+                'is_veg': item[16]
             }
             for item in get_result
         ]
@@ -183,8 +187,15 @@ class DbManager:
 
         return result_obj
 
-    def connect_user_requests(self, volunteer_uid, donor_req_id, receive_req_id):
-        assert volunteer_uid and donor_req_id and receive_req_id, "insufficient data to process request"
+    def connect_user_requests(self, volunteer_uid, req_id_pair: list | tuple):
+
+        if not volunteer_uid and len(req_id_pair) != 2:
+            err_msg = 'invalid request! ' \
+                      'insufficient arguments to process the request. ' \
+                      'need two ids (req & donate) and volunteer id.'
+            print(err_msg)
+            print(f"Got vol_id: {volunteer_uid} & ticket_ids: {str(req_id_pair)}")
+            return {"success": False, "err_msg": err_msg}
 
         query_connect_reqs = "INSERT INTO matched_request_map (fk_rid_donate, fk_rid_receive) VALUES (?, ?)"
         query_mark_req_confirm = "UPDATE request_table " \
@@ -193,26 +204,15 @@ class DbManager:
 
         conn = self.connection_provider()
 
-        conn.execute(query_connect_reqs, (donor_req_id, receive_req_id))
+        conn.execute(query_connect_reqs, tuple(req_id_pair))
 
         common_args = (common_code.get_ist(), 'confirmed', volunteer_uid)
-        conn.executemany(query_mark_req_confirm, [common_args+(pk_rid,) for pk_rid in [donor_req_id, receive_req_id]])
+        conn.executemany(query_mark_req_confirm, [common_args+(pk_rid,) for pk_rid in req_id_pair])
 
         conn.commit()
         conn.close()
 
-    def user_mark_delivered(self, receive_req_id):
-        query_get_donor_req_id = "SELECT fk_rid_donate FROM matched_request_map WHERE fk_rid_receive=?"
-        query_mark_delivered = "UPDATE request_table SET request_status=? WHERE pk_rid=?"
-
-        conn = self.connection_provider()
-        query_res_donor_req_id = conn.execute(query_get_donor_req_id, (receive_req_id,)).fetchone()
-        assert query_res_donor_req_id
-
-        donate_req_id = query_res_donor_req_id[0]
-        conn.executemany(query_mark_delivered, [('delivered', donate_req_id), ('delivered', receive_req_id)])
-        conn.commit()
-        conn.close()
+        return {'success': True}
 
     def user_put_review(self, req_id, rating, review):
         query_put_review = "UPDATE request_table " \
@@ -265,5 +265,38 @@ class DbManager:
 
         conn = self.connection_provider()
         conn.executemany(query_modify_is_volunteer, params)
+        conn.commit()
+        conn.close()
+
+    def check_user_authority_and_ticket_state(self, user_id, ticket_ids: list):
+        query_ticket_info = "SELECT fk_creator_uid, request_status, is_donate_req " \
+                            "FROM request_table " \
+                            "WHERE pk_rid = ?"
+
+        conn = self.connection_provider()
+        ticket_info_list = []
+        for ticket_id in ticket_ids:
+            ticket_info_list.append(conn.execute(query_ticket_info, (ticket_id,)).fetchone())
+
+        required_match = (int(user_id), sym.TicketStatus.CONFIRMED, 0)
+
+        return all([required_match == ticket_info for ticket_info in ticket_info_list])
+
+    def mark_confirmed_tickets_delivered(self, ticket_ids: list):
+        query_get_req_id_pairs = "SELECT fk_rid_donate, fk_rid_receive " \
+                                 "FROM matched_request_map " \
+                                 "WHERE fk_rid_donate=? OR fk_rid_receive=?"
+        query_mark_delivered = "UPDATE request_table SET request_status=? WHERE pk_rid=?"
+
+        update_params_list = []
+        conn = self.connection_provider()
+        for ticket_id in ticket_ids:
+            donate_req_id, receive_req_id = conn.execute(query_get_req_id_pairs, (ticket_id, ticket_id)).fetchone()
+            update_params_list.extend([
+                ('delivered', donate_req_id),
+                ('delivered', receive_req_id)
+            ])
+
+        conn.executemany(query_mark_delivered, update_params_list)
         conn.commit()
         conn.close()

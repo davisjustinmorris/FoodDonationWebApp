@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <title>User Home</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <script src="{{ url_for('static', filename='jquery-3.6.0.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/all.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='user_dashboard.css') }}">
     <script src="{{ url_for('static', filename='user_dashboard.js') }}"></script>
@@ -29,6 +31,15 @@
         </div>
         <div class="row">
             {% include 'partials/ticket_filters.html' %}
+        </div>
+        <div class="row">
+            <div id="ticket-actions" class="filters row">
+                <span>Actions:</span>
+                <span class="mark">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    Mark Delivered
+                </span>
+            </div>
         </div>
     </div>
 

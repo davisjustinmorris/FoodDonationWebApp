@@ -5,75 +5,19 @@
     <title>Title</title>
 
     <script src="{{ url_for('static', filename='jquery-3.6.0.js') }}"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/all.css') }}">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <script src="{{ url_for('static', filename='main.js') }}"></script>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='volunteer_dashboard.css') }}">
-    <script src="{{ url_for('static', filename='volunteer_dashboard.js') }}"></script>
+{#    <script src="{{ url_for('static', filename='volunteer_dashboard.js') }}"></script>#}
 </head>
 <body class="fx fdc aifs">
     {% include 'partials/header_1.html' %}
 
 
-    <div class="bg_z_minus">
-        <div class="overlay"></div>
-    </div>
-
-
-{#    <form id="form-connect-open-requests" action="/volunteer_dashboard" method="post">#}
-{#        <h2>Open requests</h2>#}
-{#        <input type="hidden" name="task" value="connect-open-requests">#}
-{#    #}
-{#        {% if payload.created %}#}
-{#        <details id="donate-list">#}
-{#            <summary>Donate Requests</summary>#}
-{#            <div class="header fx">#}
-{#                <span></span>#}
-{#                <span>Address</span>#}
-{#                <span>Contact</span>#}
-{#                <span>Qty</span>#}
-{#                <span>DateTime</span>#}
-{#            </div>#}
-{#            {% for request in payload.created  if request.is_donate_req %}#}
-{#            <div class="row fx">#}
-{#                <span class="fx aic" style="display: flex;">#}
-{#                    <input type="radio" name="pk_rid_donate" value="{{ request.pk_rid }}">#}
-{#                </span>#}
-{#                <span>{{ request.this_contact_address }}</span>#}
-{#                <span>{{ request.this_contact_phone }}</span>#}
-{#                <span>{{ request.req_qty_in_person }}x</span>#}
-{#                <span>{{ request.created_ts }}</span>#}
-{#            </div>#}
-{#            {% endfor %}#}
-{#        </details>#}
-{##}
-{#        <details id="receive-list">#}
-{#            <summary>Receive Requests</summary>#}
-{#            <div class="header fx">#}
-{#                <span></span>#}
-{#                <span>Address</span>#}
-{#                <span>Contact</span>#}
-{#                <span>Qty</span>#}
-{#                <span>DateTime</span>#}
-{#            </div>#}
-{#            {% for request in payload.created  if not request.is_donate_req %}#}
-{#            <div class="row fx">#}
-{#                <span class="fx aic" style="display: flex;">#}
-{#                    <input type="radio" name="pk_rid_receive" value="{{ request.pk_rid }}">#}
-{#                </span>#}
-{#                <span>{{ request.this_contact_address }}</span>#}
-{#                <span>{{ request.this_contact_phone }}</span>#}
-{#                <span>{{ request.req_qty_in_person }}x</span>#}
-{#                <span>{{ request.created_ts }}</span>#}
-{#            </div>#}
-{#            {% endfor %}#}
-{#        </details>#}
-{#        {% endif %}#}
-{##}
-{#        <button type="submit">Connect Selected Requests</button>#}
-{#    </form>#}
+    <div class="bg_z_minus"><div class="overlay"></div></div>
 
 
     <div class="header_controls">
@@ -85,15 +29,20 @@
             {% include 'partials/ticket_filters.html' %}
         </div>
         <div class="row">
-            <div id="ticket-filters" class="filters row">
+            <div id="ticket-actions" class="filters row">
                 <span>Actions:</span>
-                <span>
+                <span class="connect disabled">
                     <i class="fa fa-link" aria-hidden="true"></i>
-                    Connect Selected Tickets
+                    Connect Tickets
+                </span>
+                <span class="mark">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    Mark Delivered
                 </span>
             </div>
         </div>
     </div>
+
 
     {% include 'partials/all_tickets.html' %}
 

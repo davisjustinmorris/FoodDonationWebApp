@@ -1,5 +1,7 @@
 form {
   margin: 1.5rem;
+  background-color: #EEE;
+  padding: 2rem;
 }
 form .header {
   margin-top: 1.5rem;
@@ -45,6 +47,7 @@ form button[type=submit] {
   font-weight: 500;
   border-radius: 5px;
   cursor: pointer;
+  border-bottom: 0;
 }
 form#normal-users-form button[type=submit] {
   border: 1px solid green;
