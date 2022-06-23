@@ -137,6 +137,31 @@ def handle_user_dashboard():
     )
 
 
+@app.route('/donor_summary', methods=['GET', 'POST'])
+def handle_donor_summary():
+    """Page for donor summary"""
+
+    user_type = session['user_info']['user_type']
+    if user_type not in ['super_admin', 'volunteer']:
+        return 'You dont have permission to view this page!<br><a href="/">Back Home</a>'
+
+    # if request.method == 'POST':
+    #     print('handle_volunteer_dashboard: connect open request > form data dump >')
+    #     inbound_data = dict(request.get_json())
+    #     print(inbound_data)
+    #
+    #     if inbound_data.get('task') == 'connect-open-requests':
+    #         return db_man.connect_user_requests(session['user_info']['uid'], inbound_data.get('payload'))
+    #
+    #     elif inbound_data.get('task') == 'mark-confirmed-tickets-delivered':
+    #         db_man.mark_confirmed_tickets_delivered(inbound_data.get('payload'))
+    #         return {'success': True}
+
+    return render_template(
+        'donor_summary.html',
+    )
+
+
 @app.route('/volunteer_dashboard', methods=['GET', 'POST'])
 def handle_volunteer_dashboard():
     """Homepage for volunteers"""
