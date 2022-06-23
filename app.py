@@ -159,6 +159,8 @@ def handle_donor_summary():
 
     return render_template(
         'donor_summary.html',
+        user_type=session['user_info']['user_type'],
+        donors=db_man.get_donor_review_avg()
     )
 
 

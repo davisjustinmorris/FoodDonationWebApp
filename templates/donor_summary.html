@@ -19,7 +19,25 @@
 
     <div class="bg_z_minus"><div class="overlay"></div></div>
 
-
+    <main>
+        <h2>Donor Summary</h2>
+        <div class="container">
+            <div class="row heading">
+                <span>Name</span>
+                <span>Contact</span>
+                <span>Rating (& Count)</span>
+            </div>
+            {% for donor in donors %}
+            <a href="/donor_detail/{{ donor.uid }}">
+                <div class="row" id="{{ donor.uid }}">
+                    <span>{{ donor.name }}</span>
+                    <span>{{ donor.contact }}</span>
+                    <span>{{ donor.rating }} <i class="fa fa-star"></i> ({{ donor.count }})</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </main>
 
     <script type="text/javascript">
         function googleTranslateElementInit() {

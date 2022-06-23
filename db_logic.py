@@ -300,3 +300,30 @@ class DbManager:
         conn.executemany(query_mark_delivered, update_params_list)
         conn.commit()
         conn.close()
+
+    def get_donor_review_avg(self):
+        query = """
+        SELECT ut.pk_uid, ut.name, ut.phone, round(avg(rcv.review_rating),2), count(rcv.review_rating)
+        FROM request_table rcv
+        JOIN matched_request_map map ON rcv.pk_rid = map.fk_rid_receive
+        JOIN request_table dnt ON dnt.pk_rid = map.fk_rid_donate
+        JOIN user_table ut on ut.pk_uid = dnt.fk_creator_uid
+        WHERE rcv.is_donate_req != 1 AND rcv.request_status = 'reviewed'
+        GROUP BY ut.pk_uid, ut.name"""
+
+        conn = self.connection_provider()
+        get_result = conn.execute(query).fetchall()
+        conn.close()
+
+        named_res_list = [
+            {
+                "uid": val[0],
+                "name": val[1],
+                "contact": val[2],
+                "rating": val[3],
+                "count": val[4],
+            }
+            for val in get_result
+        ]
+
+        return named_res_list
