@@ -25,6 +25,8 @@ $(document).ready(function () {
     all_tickets.on('click', function (event) {
         if (
             (event.target.name === "selection") ||
+            (event.target.name === "do_review") ||
+            ($(event.target).parent()[0].name === "do_review") ||
             event.target.classList.contains("contact-phone") ||
             $(event.target).parent()[0].classList.contains("contact-phone")
         ) return
@@ -75,6 +77,26 @@ $(document).ready(function () {
         }
 
         $('#ticket-actions .connect').addClass('disabled');
+    });
+
+    // OnClick for Do_Review button in cards
+    $(`button[name="do_review"]`).on('click', function () {
+        let req_id = $(this).parent().parent().parent().parent().find('input[name="request_id"]').val();
+        $('#full-popup').addClass('active');
+        $('#full-popup #feedback-form').addClass('active');
+        $('#full-popup #feedback-form input[name="req_id"]').val(req_id);
+
+        $('#feedback-form textarea').val('');
+        $('#feedback-form input[type="radio"]').prop('checked', false);
+    })
+
+    // feedback popup submit click handler
+    $('#feedback-form').submit(function (e) {
+        // perform input validation
+        if (!($('#feedback-form input[name="rating_value"]:checked').val() && $('#feedback-form textarea').val())) {
+            e.preventDefault();
+            alert('please choose a rating and provide review to continue');
+        }
     });
 });
 

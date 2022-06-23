@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='volunteer_dashboard.css') }}">
 {#    <script src="{{ url_for('static', filename='volunteer_dashboard.js') }}"></script>#}
+
 </head>
 <body class="fx fdc aifs">
     {% include 'partials/header_1.html' %}
@@ -45,6 +46,20 @@
 
 
     {% include 'partials/all_tickets.html' %}
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+                {
+                    pageLanguage: 'en',
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                },
+                'google_translate_element'
+            );
+        }
+    </script>
+
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>

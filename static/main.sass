@@ -28,6 +28,10 @@
 html
   overflow-y: scroll
   background-color: #444b58
+  &.translated-ltr, &.translated-rtl
+    nav.main-styles
+      top: 40px
+
 body
   padding: 5rem 3rem
   background: #00000000
@@ -53,6 +57,7 @@ body
       color: #dcdcdc
       &:visited
         color: #dcdcdc
+
 
   h2.all-tickets
     margin-left: 1rem
@@ -85,7 +90,7 @@ body
   align-self: flex-start
   border-radius: 5px
   background: #F0F0F0
-  padding: 7px 2rem
+  padding: 7px 2rem 10px
   .row
     display: flex
     align-items: center
@@ -243,14 +248,47 @@ div.all-tickets
 
         .minor
           flex-grow: 1
-          max-width: 100px
+          max-width: 7rem
           justify-content: space-between
+
           .review
             display: flex
             align-items: center
             justify-content: space-between
             //input[type="checkbox"]
             //  size: 2rem
+            span
+              position: relative
+              button[name="do_review"]
+                cursor: pointer
+                color: #000
+                background-color: #e0e0e0
+                border: 1px solid #444b58
+                border-radius: 5px
+                padding-left: 3px
+                box-shadow: 0 0 5px -1px #0009
+                transition: box-shadow 0.18ms ease-out
+                &:hover
+                  box-shadow: 0 0 3px 0 #000C
+              .feedback
+                position: absolute
+                padding: 5px
+                border-radius: 5px
+                bottom: 2rem
+                right: 0
+                background-color: #00000000
+                color: #00000000
+                transition: all 0.3s ease-out
+                min-width: 7rem
+              .fa-comments:hover + .feedback
+                background-color: #F0F0F0
+                visibility: visible
+                color: unset
+                box-shadow: 0 0 8px -2px #222
+                right: -3rem
+
+          .rec_don > span
+            line-break: anywhere
 
           .is-veg
             margin-right: 3px
@@ -273,9 +311,11 @@ div.all-tickets
               border-color: #CD5C5CFF
               div.circle
                 background-color: #CD5C5CFF
+
           .request-status
             span
               font-weight: 600
+              line-break: anywhere
             &.created span
               color: $status-created-color
             &.confirmed span

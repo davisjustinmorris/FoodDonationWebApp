@@ -37,6 +37,9 @@ html {
   overflow-y: scroll;
   background-color: #444b58;
 }
+html.translated-ltr nav.main-styles, html.translated-rtl nav.main-styles {
+  top: 40px;
+}
 
 body {
   padding: 5rem 3rem;
@@ -97,7 +100,7 @@ body .bg_z_minus .overlay {
   align-self: flex-start;
   border-radius: 5px;
   background: #F0F0F0;
-  padding: 7px 2rem;
+  padding: 7px 2rem 10px;
 }
 .header_controls .row {
   display: flex;
@@ -273,13 +276,50 @@ div.all-tickets .request-card-container .request-card-envelop .request-card .maj
 }
 div.all-tickets .request-card-container .request-card-envelop .request-card .minor {
   flex-grow: 1;
-  max-width: 100px;
+  max-width: 7rem;
   justify-content: space-between;
 }
 div.all-tickets .request-card-container .request-card-envelop .request-card .minor .review {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .review span {
+  position: relative;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .review span button[name=do_review] {
+  cursor: pointer;
+  color: #000;
+  background-color: #e0e0e0;
+  border: 1px solid #444b58;
+  border-radius: 5px;
+  padding-left: 3px;
+  box-shadow: 0 0 5px -1px rgba(0, 0, 0, 0.6);
+  transition: box-shadow 0.18ms ease-out;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .review span button[name=do_review]:hover {
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.8);
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .review span .feedback {
+  position: absolute;
+  padding: 5px;
+  border-radius: 5px;
+  bottom: 2rem;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0);
+  color: rgba(0, 0, 0, 0);
+  transition: all 0.3s ease-out;
+  min-width: 7rem;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .review span .fa-comments:hover + .feedback {
+  background-color: #F0F0F0;
+  visibility: visible;
+  color: unset;
+  box-shadow: 0 0 8px -2px #222;
+  right: -3rem;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .rec_don > span {
+  line-break: anywhere;
 }
 div.all-tickets .request-card-container .request-card-envelop .request-card .minor .is-veg {
   margin-right: 3px;
@@ -310,6 +350,7 @@ div.all-tickets .request-card-container .request-card-envelop .request-card .min
 }
 div.all-tickets .request-card-container .request-card-envelop .request-card .minor .request-status span {
   font-weight: 600;
+  line-break: anywhere;
 }
 div.all-tickets .request-card-container .request-card-envelop .request-card .minor .request-status.created span {
   color: #ba3000;

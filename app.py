@@ -89,7 +89,6 @@ def handle_login():
 def handle_user_dashboard():
     """Homepage of users"""
     if request.method == 'POST':
-        inbound_data = request.get_json()
 
         if request.form.get('task') == 'create-request':
             required_form_keys = [
@@ -103,9 +102,16 @@ def handle_user_dashboard():
             payload['request_status'] = 'created'
 
             db_man.create_donor_request(payload=payload)
-            return 'req created<br><a href="/">Back to page</a>'
+            return redirect(url_for('handle_user_dashboard'))
 
-        elif inbound_data.get('task') == 'mark-confirmed-tickets-delivered':
+        print('getting inbound json')
+        if request.is_json:
+            inbound_data = request.get_json()
+        else:
+            inbound_data = {}
+        print(inbound_data)
+
+        if inbound_data.get('task') == 'mark-confirmed-tickets-delivered':
             print('handle_user_dashboard: form data dump of task "mark-delivered"> ' + str(inbound_data))
 
             if db_man.check_user_authority_and_ticket_state(session['user_info']['uid'], inbound_data.get('payload')):

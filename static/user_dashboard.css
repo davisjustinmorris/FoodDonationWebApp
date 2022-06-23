@@ -97,5 +97,28 @@ body details .row span:nth-child(7), body details .header span:nth-child(7) {
   display: flex;
   align-items: center;
 }
+.full-popup #feedback-form > div {
+  display: flex;
+  align-items: center;
+}
+.full-popup #feedback-form > div > input {
+  margin-top: 3px;
+  margin-left: 3px;
+  cursor: pointer;
+}
+.full-popup #feedback-form textarea {
+  padding: 5px;
+  margin: 3px 0 10px;
+}
+.full-popup #feedback-form input[type=submit] {
+  padding: 3px 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: #5ac2ed;
+  cursor: pointer;
+}
+.full-popup #feedback-form input[type=submit]:hover {
+  background-color: #51acd1;
+}
 
 /*# sourceMappingURL=user_dashboard.css.map */

@@ -1,45 +1,52 @@
 <div class="all-tickets">
     <div class="request-card-container">
-        {% for request in payload.all %}
-        <div class="request-card-envelop {{ request.request_status }}">
+        {% for this_request in payload.all %}
+        <div class="request-card-envelop {{ this_request.request_status }}">
             <div class="request-card">
-                <input type="hidden" name="request_id" value="{{ request.pk_rid }}">
-                <input type="hidden" name="request_type" value="{{ request.is_donate_req }}">
-                <input type="hidden" name="request_status" value="{{ request.request_status }}">
+                <input type="hidden" name="request_id" value="{{ this_request.pk_rid }}">
+                <input type="hidden" name="request_type" value="{{ this_request.is_donate_req }}">
+                <input type="hidden" name="request_status" value="{{ this_request.request_status }}">
 
                 <div class="col major">
                     <div class="top">
-                        <span><i class="fa fa-user"></i>{{ request.user_name }}</span>
-                        <span style="max-width: 10rem"><i class="fa fa-home"></i>{{ request.this_contact_address }}</span>
+                        <span><i class="fa fa-user"></i>{{ this_request.user_name }}</span>
+                        <span style="max-width: 10rem"><i class="fa fa-home"></i>{{ this_request.this_contact_address }}</span>
                     </div>
 
                     <div class="mid">
-                        <a href="tel:{{ request.this_contact_phone }}" class="contact-phone">
+                        <a href="tel:{{ this_request.this_contact_phone }}" class="contact-phone">
                             <i class="fa fa-phone"></i>
-                            <span>{{ request.this_contact_phone }}</span>
+                            <span>{{ this_request.this_contact_phone }}</span>
                         </a>
                     </div>
 
-                    <span><i class="fa fa-clock"></i>{{ request.created_ts }}</span>
+                    <span><i class="fa fa-clock"></i>{{ this_request.created_ts }}</span>
                 </div>
 
                 <div class="col minor">
                     <div class="review">
                         <span>
-                        {% if request.review_rating %}
-                            <i class="fa fa-star"></i>{{ request.review_rating }}
-                        {% endif %}
+                            {% if this_request.review_rating %}
+                                <i class="fa fa-star"></i>{{ this_request.review_rating }}
+                            {% endif %}
+                            {% if this_request.review_feedback %}
+                                <i class="fa fa-comments"></i>
+                                <span class="feedback">
+                                    {{ this_request.review_feedback | safe }}
+                                </span>
+                            {% elif this_request.is_donate_req != 1 and this_request.request_status == "delivered" and url_for(request.endpoint) == '/dashboard' %}
+                                <button name="do_review">
+                                    <span style="margin-left: 2px">Review</span>
+                                    <i class="fa fa-comment"></i>
+                                </button>
+                            {% endif %}
                         </span>
+                    {% if (this_request.is_donate_req != 1 and this_request.request_status == "confirmed" and url_for(request.endpoint) == '/dashboard') or url_for(request.endpoint) != '/dashboard' %}
                         <input type="checkbox" name="selection">
-{#                        {% if request.review_feedback %}#}
-{#                            <span>#}
-{#                                <i class="fa fa-comments-o"></i>#}
-{#                                {{ request.review_feedback | safe }}#}
-{#                            </span>#}
-{#                        {% endif %}#}
+                    {% endif %}
                     </div>
-                    <span>
-                        {% if request.is_donate_req == 1 %}
+                    <span class="rec_don">
+                        {% if this_request.is_donate_req == 1 %}
                             <i class="fa fa-long-arrow-up"></i><span>Donate</span>
                         {% else %}
                             <i class="fa fa-long-arrow-down"></i><span>Receive</span>
@@ -47,14 +54,14 @@
                     </span>
                     <div class="fx">
                         <i class="fa fa-cutlery"></i>
-                        <div class="is-veg {{ "veg" if request.is_veg == 1 else "non-veg" }}">
+                        <div class="is-veg {{ "veg" if this_request.is_veg == 1 else "non-veg" }}">
                             <div class="circle"></div>
                         </div>
-                        <span>({{ request.req_qty_in_person }}x)</span>
+                        <span>({{ this_request.req_qty_in_person }}x)</span>
                     </div>
-                    <span class="request-status {{ request.request_status }}">
+                    <span class="request-status {{ this_request.request_status }}">
                         <i class="fa fa-retweet"></i>
-                        <span>{{ request.request_status.capitalize() }}</span>
+                        <span>{{ this_request.request_status.capitalize() }}</span>
                     </span>
                 </div>
             </div>
@@ -62,3 +69,4 @@
         {% endfor %}
     </div>
 </div>
+
