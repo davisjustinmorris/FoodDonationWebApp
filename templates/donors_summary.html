@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <script src="{{ url_for('static', filename='main.js') }}"></script>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='donor_summary.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='donors_summary.css') }}">
 {#    <script src="{{ url_for('static', filename='donor_summary.js') }}"></script>#}
 
 </head>
@@ -28,7 +28,7 @@
                 <span>Rating (& Count)</span>
             </div>
             {% for donor in donors %}
-            <a href="/donor_detail/{{ donor.uid }}">
+            <a href="/donor_details/{{ donor.uid }}">
                 <div class="row" id="{{ donor.uid }}">
                     <span>{{ donor.name }}</span>
                     <span>{{ donor.contact }}</span>
