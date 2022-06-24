@@ -153,7 +153,7 @@ def handle_donor_summary():
 
 
 @app.route('/donor_details/<donor_uid>', methods=['GET', 'POST'])
-def handle_donor_summary(donor_uid):
+def handle_donor_details(donor_uid):
     """Page for donor details"""
 
     user_type = session['user_info']['user_type']
@@ -163,7 +163,7 @@ def handle_donor_summary(donor_uid):
     return render_template(
         'donor_details.html',
         user_type=session['user_info']['user_type'],
-        donors=db_man.get_donor_review_avg()
+        payload=db_man.get_donor_specific_review_details(donor_uid)
     )
 
 

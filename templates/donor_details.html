@@ -13,6 +13,65 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='donor_details.css') }}">
 </head>
 <body>
+    {% include 'partials/header_1.html' %}
+
+    <div class="bg_z_minus"><div class="overlay"></div></div>
+
+    <main>
+        <h2>Donor Summary</h2>
+        <div class="container">
+            <section class="donor-info">
+                <div>
+                    <span>Name</span>
+                    <span>{{ payload.donor.name }}</span>
+                </div>
+                <div>
+                    <span>Contact</span>
+                    <span>{{ payload.donor.contact }}</span>
+                </div>
+                <div>
+                    <span>Address</span>
+                    <span>{{ payload.donor.address }}</span>
+                </div>
+                <div>
+                    <span>Number of Reviews received</span>
+                    <span>{{ payload.reviews | length }}</span>
+                </div>
+            </section>
+            <section class="reviews">
+                <div class="row heading">
+                    <span>Date & Time</span>
+                    <span>Quantity</span>
+                    <span>Veg/N-Veg</span>
+                    <span>Rating</span>
+                    <span>Review</span>
+                </div>
+                {% for this_review in payload.reviews %}
+                <div class="row" id="{{ this_review.id }}">
+                    <span>{{ this_review.timestamp }}</span>
+                    <span>{{ this_review.quantity }}</span>
+                    <span>{{ "Veg" if this_review.is_veg else "Non Veg" }}</span>
+                    <span>{{ this_review.rating }}</span>
+                    <span>{{ this_review.review }}</span>
+                </div>
+                {% endfor %}
+            </section>
+        </div>
+    </main>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+                {
+                    pageLanguage: 'en',
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                },
+                'google_translate_element'
+            );
+        }
+    </script>
+
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>

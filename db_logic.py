@@ -187,14 +187,14 @@ class DbManager:
 
         return result_obj
 
-    def connect_user_requests(self, volunteer_uid, req_id_pair: list | tuple):
+    def connect_user_requests(self, volunteer_uid, req_id_list: list):
 
-        if not volunteer_uid and len(req_id_pair) != 2:
+        if not volunteer_uid and len(req_id_list) != 2:
             err_msg = 'invalid request! ' \
                       'insufficient arguments to process the request. ' \
                       'need two ids (req & donate) and volunteer id.'
             print(err_msg)
-            print(f"Got vol_id: {volunteer_uid} & ticket_ids: {str(req_id_pair)}")
+            print(f"Got vol_id: {volunteer_uid} & ticket_ids: {str(req_id_list)}")
             return {"success": False, "err_msg": err_msg}
 
         query_connect_reqs = "INSERT INTO matched_request_map (fk_rid_donate, fk_rid_receive) VALUES (?, ?)"
@@ -204,10 +204,14 @@ class DbManager:
 
         conn = self.connection_provider()
 
-        conn.execute(query_connect_reqs, tuple(req_id_pair))
+        req_tuple = (
+            [item for item in req_id_list if 'donate' in item][0].get('donate'),
+            [item for item in req_id_list if 'receive' in item][0].get('receive'),
+        )
+        conn.execute(query_connect_reqs, req_tuple)
 
         common_args = (common_code.get_ist(), 'confirmed', volunteer_uid)
-        conn.executemany(query_mark_req_confirm, [common_args+(pk_rid,) for pk_rid in req_id_pair])
+        conn.executemany(query_mark_req_confirm, [common_args+(pk_rid,) for pk_rid in req_tuple])
 
         conn.commit()
         conn.close()
@@ -223,9 +227,12 @@ class DbManager:
 
         query_get_req_pair_id = "SELECT fk_rid_donate FROM matched_request_map WHERE fk_rid_receive=?"
         rid_donate_tuple = conn.execute(query_get_req_pair_id, (req_id,)).fetchone()
+        conn.commit()
+        conn.close()
         assert rid_donate_tuple, "Deadblock! pair req_id should be present"
 
         query_mark_reviewed = "UPDATE request_table SET request_status='reviewed' WHERE pk_rid=?"
+        conn = self.connection_provider()
         conn.execute(query_mark_reviewed, rid_donate_tuple)
 
         conn.commit()
@@ -276,6 +283,7 @@ class DbManager:
         conn = self.connection_provider()
         ticket_info_list = []
         for ticket_id in ticket_ids:
+            ticket_id = list(ticket_id.values())[0]
             ticket_info_list.append(conn.execute(query_ticket_info, (ticket_id,)).fetchone())
 
         required_match = (int(user_id), sym.TicketStatus.CONFIRMED, 0)
@@ -291,6 +299,7 @@ class DbManager:
         update_params_list = []
         conn = self.connection_provider()
         for ticket_id in ticket_ids:
+            ticket_id = list(ticket_id.values())[0]
             donate_req_id, receive_req_id = conn.execute(query_get_req_id_pairs, (ticket_id, ticket_id)).fetchone()
             update_params_list.extend([
                 ('delivered', donate_req_id),
@@ -327,3 +336,40 @@ class DbManager:
         ]
 
         return named_res_list
+
+    def get_donor_specific_review_details(self, uid):
+        query_reviews = """
+        SELECT rcv.pk_rid, rcv.review_rating, rcv.review_feedback, dnt.last_updated_ts, rcv.req_qty_in_person, rcv.is_veg
+        FROM request_table rcv
+        JOIN matched_request_map map ON rcv.pk_rid = map.fk_rid_receive
+        JOIN request_table dnt ON dnt.pk_rid = map.fk_rid_donate
+        JOIN user_table ut on ut.pk_uid = dnt.fk_creator_uid
+        WHERE rcv.is_donate_req != 1 AND rcv.request_status = 'reviewed' AND ut.pk_uid = ?"""
+
+        query_user_info = "SELECT name, phone, address FROM user_table WHERE pk_uid = ?"
+
+        conn = self.connection_provider()
+        get_reviews_result = conn.execute(query_reviews, (uid,)).fetchall()
+        get_user_info = conn.execute(query_user_info, (uid,)).fetchone()
+        conn.close()
+
+        named_reviews_list = [
+            {
+                "id": val[0],
+                "rating": val[1],
+                "review": val[2],
+                "timestamp": val[3],
+                "quantity": val[4],
+                "is_veg": val[5],
+            }
+            for val in get_reviews_result
+        ]
+
+        return {
+            "donor": {
+                "name": get_user_info[0],
+                "contact": get_user_info[1],
+                "address": get_user_info[2],
+            },
+            "reviews": named_reviews_list
+        }

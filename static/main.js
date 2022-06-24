@@ -100,24 +100,29 @@ $(document).ready(function () {
     });
 });
 
+// function that handles checkbox based actions (connect tickets & mark delivered)
 function do_mark_connect_requests(task) {
     let marked_ids = $('.all-tickets .request-card input[type="checkbox"]:checked')
         .parents('.request-card').find('input[name="request_id"]');
 
-    let marked_ids_list = [];
+    let marked_list = [];
     marked_ids.each(function (i, id_element) {
-        // console.log(id_element);
-        marked_ids_list.push($(id_element).val());
+        let is_donate = $(id_element).parent().find('input[name="request_type"]').val();
+        console.log(is_donate);
+        let key = is_donate==1?"donate":"receive";
+        let data_obj = {}
+        data_obj[key] = $(id_element).val();
+        marked_list.push(data_obj);
     });
 
-    console.log(marked_ids_list);
+    console.log(marked_list);
 
     $.ajax({
         type: 'POST',
         url: window.location.pathname,
         data: JSON.stringify ({
             'task': task,
-            'payload': marked_ids_list
+            'payload': marked_list
         }),
         success: (data) => {
             console.log(data);
