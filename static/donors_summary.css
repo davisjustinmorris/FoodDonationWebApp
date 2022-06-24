@@ -1,0 +1,37 @@
+main {
+  background-color: #F0F0F0;
+  border-radius: 5px;
+  padding: 7px 2rem 10px;
+}
+main h2 {
+  font-size: 2.5rem;
+}
+main .container {
+  margin: 1rem 0;
+}
+main .container a {
+  text-decoration: none;
+  color: unset;
+}
+main .container .row {
+  border-bottom: 1px solid #000000;
+  padding: 5px 0;
+}
+main .container .row.heading {
+  font-weight: 700;
+  border-bottom: 2px solid #000000;
+}
+main .container .row > span {
+  display: inline-block;
+}
+main .container .row > span:nth-child(1) {
+  min-width: 18rem;
+}
+main .container .row > span:nth-child(2) {
+  min-width: 10rem;
+}
+main .container .row > span:nth-child(3) {
+  min-width: 5rem;
+}
+
+/*# sourceMappingURL=donors_summary.css.map */

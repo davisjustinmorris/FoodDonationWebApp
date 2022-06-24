@@ -1,0 +1,48 @@
+main {
+  background-color: #F0F0F0;
+  border-radius: 5px;
+  padding: 7px 2rem 10px;
+}
+main h2 {
+  font-size: 2.5rem;
+}
+main .donor-info {
+  margin: 1rem 0;
+}
+main .donor-info div span:first-child {
+  font-weight: 700;
+}
+main .donor-info div span:first-child::after {
+  content: ":";
+}
+main .reviews {
+  margin: 1rem 0;
+}
+main .reviews .row {
+  border-bottom: 1px solid #000000;
+  padding: 5px 0;
+}
+main .reviews .row.heading {
+  font-weight: 700;
+  border-bottom: 2px solid #000000;
+}
+main .reviews .row > span {
+  display: inline-block;
+}
+main .reviews .row > span:nth-child(1) {
+  min-width: 12rem;
+}
+main .reviews .row > span:nth-child(2) {
+  min-width: 6rem;
+}
+main .reviews .row > span:nth-child(3) {
+  min-width: 7rem;
+}
+main .reviews .row > span:nth-child(4) {
+  min-width: 5rem;
+}
+main .reviews .row > span:nth-child(5) {
+  min-width: 10rem;
+}
+
+/*# sourceMappingURL=donor_details.css.map */

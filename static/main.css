@@ -1,0 +1,372 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700;800;900&display=swap");
+.fx {
+  display: flex;
+}
+.fx.fdc {
+  flex-direction: column;
+}
+.fx.jcc {
+  justify-content: center;
+}
+.fx.aic {
+  align-items: center;
+}
+.fx.aifs {
+  align-items: flex-start;
+}
+
+.fx-asc {
+  align-self: center;
+}
+
+.fx-spacer {
+  flex-grow: 1;
+}
+
+.list-lsn {
+  list-style: none;
+}
+
+* {
+  font-family: "Nunito", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  overflow-y: scroll;
+  background-color: #444b58;
+}
+html.translated-ltr nav.main-styles, html.translated-rtl nav.main-styles {
+  top: 40px;
+}
+
+body {
+  padding: 5rem 3rem;
+  background: rgba(0, 0, 0, 0);
+  box-sizing: border-box;
+}
+body nav.main-styles {
+  z-index: 10;
+  align-self: stretch;
+  padding: 1rem 2rem;
+  background-color: #444b58;
+  box-shadow: 0 3px 3px -1px rgba(51, 51, 51, 0.2);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+body nav.main-styles ul li:not(:first-child, :last-child) {
+  padding: 0 1rem;
+}
+body nav.main-styles li.user_type {
+  margin-left: 1.5rem;
+  color: dodgerblue;
+}
+body nav.main-styles ul li a {
+  text-decoration: none;
+  font-weight: 600;
+  color: #dcdcdc;
+}
+body nav.main-styles ul li a:visited {
+  color: #dcdcdc;
+}
+body nav.main-styles #google_translate_element {
+  margin-left: 2rem;
+}
+body h2.all-tickets {
+  margin-left: 1rem;
+  margin-bottom: 5px;
+}
+body .bg_z_minus {
+  z-index: -1;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-image: url(frodo_bg.jpg);
+  background-position: center;
+  background-size: 700px;
+  filter: saturate(30%) brightness(80%) contrast(62%);
+}
+body .bg_z_minus .overlay {
+  width: 100%;
+  height: 100%;
+  background: rgba(124, 124, 124, 0.0705882353);
+}
+
+.header_controls {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  align-self: flex-start;
+  border-radius: 5px;
+  background: #F0F0F0;
+  padding: 7px 2rem 10px;
+}
+.header_controls .row {
+  display: flex;
+  align-items: center;
+}
+.header_controls h2.title_my_req {
+  font-size: 2.5rem;
+  margin-right: 3.5rem;
+}
+.header_controls button {
+  color: #EEE;
+  background-color: #444b58;
+  padding: 7px 1rem;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.header_controls button span {
+  font-size: 1rem;
+  margin-left: 5px;
+}
+.header_controls #ticket-filters > span:first-child, .header_controls #ticket-actions > span:first-child {
+  font-weight: bold;
+}
+.header_controls #ticket-filters {
+  margin: 5px 0 3px;
+}
+.header_controls #ticket-filters > span:first-child {
+  font-weight: bold;
+}
+.header_controls #ticket-filters label {
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+  cursor: pointer;
+}
+.header_controls #ticket-filters label input {
+  margin-right: 3px;
+}
+.header_controls #ticket-actions span:not(:first-child) {
+  margin-left: 5px;
+  cursor: pointer;
+  transition: all 370ms;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+.header_controls #ticket-actions .connect:not(.disabled):hover {
+  background-color: rgba(221, 228, 9, 0.5647058824);
+}
+.header_controls #ticket-actions .connect.disabled {
+  cursor: not-allowed;
+  background-color: #b6b6b6;
+}
+.header_controls #ticket-actions .mark:hover {
+  background-color: rgba(0, 112, 186, 0.4392156863);
+}
+@media (max-width: 650px) {
+  .header_controls {
+    align-self: center;
+    margin-top: 2rem;
+  }
+  .header_controls h2 {
+    margin-top: 0.8rem;
+  }
+  .header_controls .row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .header_controls #btn-create-request {
+    margin: 0.5rem 0;
+  }
+  .header_controls #ticket-filters, .header_controls #ticket-actions {
+    margin-bottom: 1rem;
+  }
+  .header_controls #ticket-actions span:not(:first-child) {
+    margin: 2px 0;
+  }
+}
+
+div.all-tickets {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+div.all-tickets .row {
+  display: flex;
+  margin-top: 3px;
+}
+div.all-tickets .col {
+  display: flex;
+  flex-direction: column;
+}
+div.all-tickets .request-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -0.5rem;
+  justify-content: space-evenly;
+}
+div.all-tickets .request-card-container .request-card-envelop {
+  display: flex;
+  flex-grow: 1;
+  min-width: 21rem;
+  max-width: 25rem;
+  padding-top: 5px;
+  border-radius: 5px;
+  margin: 0.5rem 0.5rem;
+  transition: all 300ms;
+  box-shadow: 2px 2px 6px 0 rgba(51, 51, 51, 0.2);
+}
+div.all-tickets .request-card-container .request-card-envelop.created {
+  background-color: #ba3000;
+}
+div.all-tickets .request-card-container .request-card-envelop.confirmed {
+  background-color: #b4ba00;
+}
+div.all-tickets .request-card-container .request-card-envelop.delivered {
+  background-color: #0070ba;
+}
+div.all-tickets .request-card-container .request-card-envelop.reviewed {
+  background-color: #19ba00;
+}
+div.all-tickets .request-card-container .request-card-envelop:hover {
+  box-shadow: 2px 2px 20px 5px rgba(51, 51, 51, 0.5333333333);
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card {
+  display: flex;
+  flex-grow: 1;
+  border-radius: 5px;
+  padding: 20px;
+  background-color: #F0F0F0;
+  position: relative;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card i.fa {
+  width: 1.2rem;
+  margin-right: 5px;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card a.contact-phone, div.all-tickets .request-card-container .request-card-envelop .request-card a.contact-phone:visited {
+  text-decoration: none;
+  color: unset;
+  transition: all 300ms;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card a.contact-phone:hover, div.all-tickets .request-card-container .request-card-envelop .request-card a.contact-phone:visited:hover {
+  background-color: rgba(51, 51, 51, 0.27);
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .major {
+  flex-grow: 3;
+  justify-content: space-between;
+  margin-right: 10px;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .major > div {
+  display: flex;
+  flex-direction: column;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .major > div.top span:first-child {
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin-bottom: 2px;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .major > div.mid {
+  margin: 0.8rem -5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .major > div.mid a.contact-phone {
+  padding: 3px 5px;
+  border-radius: 3px;
+  transition: all 500ms;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .major > div.mid a.contact-phone:hover i.fa {
+  transform: scale(125%);
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor {
+  flex-grow: 1;
+  max-width: 7rem;
+  justify-content: space-between;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .review {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .review span {
+  position: relative;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .review span button[name=do_review] {
+  cursor: pointer;
+  color: #000;
+  background-color: #e0e0e0;
+  border: 1px solid #444b58;
+  border-radius: 5px;
+  padding-left: 3px;
+  box-shadow: 0 0 5px -1px rgba(0, 0, 0, 0.6);
+  transition: box-shadow 0.18ms ease-out;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .review span button[name=do_review]:hover {
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.8);
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .review span .feedback {
+  position: absolute;
+  padding: 5px;
+  border-radius: 5px;
+  bottom: 2rem;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0);
+  color: rgba(0, 0, 0, 0);
+  transition: all 0.3s ease-out;
+  min-width: 7rem;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .review span .fa-comments:hover + .feedback {
+  background-color: #F0F0F0;
+  visibility: visible;
+  color: unset;
+  box-shadow: 0 0 8px -2px #222;
+  right: -3rem;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .rec_don > span {
+  line-break: anywhere;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .is-veg {
+  margin-right: 3px;
+  border: 2px solid;
+  width: 1rem;
+  height: 1rem;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .is-veg div.circle {
+  margin: 0.2rem;
+  border-radius: 0.3rem;
+  width: 0.6rem;
+  height: 0.6rem;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .is-veg.veg {
+  border-color: darkseagreen;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .is-veg.veg div.circle {
+  background-color: darkseagreen;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .is-veg.non-veg {
+  border-color: indianred;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .is-veg.non-veg div.circle {
+  background-color: indianred;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .request-status span {
+  font-weight: 600;
+  line-break: anywhere;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .request-status.created span {
+  color: #ba3000;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .request-status.confirmed span {
+  color: #b4ba00;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .request-status.delivered span {
+  color: #0070ba;
+}
+div.all-tickets .request-card-container .request-card-envelop .request-card .minor .request-status.reviewed span {
+  color: #19ba00;
+}
+
+/*# sourceMappingURL=main.css.map */

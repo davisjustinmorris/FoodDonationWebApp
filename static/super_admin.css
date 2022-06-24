@@ -1,0 +1,61 @@
+form {
+  margin: 1.5rem;
+  background-color: #EEE;
+  padding: 2rem;
+}
+form .header {
+  margin-top: 1.5rem;
+  border-top: 2px solid #000;
+  border-bottom: 2px solid #000;
+}
+form .header span {
+  font-weight: bold;
+}
+form .row {
+  border-bottom: 1px solid #111;
+}
+form .row span, form .header span {
+  display: block;
+  padding: 3px 5px;
+  border-right: 1px solid #111;
+}
+form .row span:first-child, form .header span:first-child {
+  border-left: 1px solid #111;
+}
+form .row span:nth-child(1), form .row input[type=checkbox]:nth-child(1), form .header span:nth-child(1), form .header input[type=checkbox]:nth-child(1) {
+  width: 1.5rem;
+}
+form .row span:nth-child(2), form .row input[type=checkbox]:nth-child(2), form .header span:nth-child(2), form .header input[type=checkbox]:nth-child(2) {
+  width: 15rem;
+}
+form .row span:nth-child(3), form .row input[type=checkbox]:nth-child(3), form .header span:nth-child(3), form .header input[type=checkbox]:nth-child(3) {
+  width: 12rem;
+}
+form .row span:nth-child(4), form .row input[type=checkbox]:nth-child(4), form .header span:nth-child(4), form .header input[type=checkbox]:nth-child(4) {
+  width: 7rem;
+}
+form .row span:nth-child(5), form .row input[type=checkbox]:nth-child(5), form .header span:nth-child(5), form .header input[type=checkbox]:nth-child(5) {
+  width: 15rem;
+}
+form .row span:nth-child(6), form .row input[type=checkbox]:nth-child(6), form .header span:nth-child(6), form .header input[type=checkbox]:nth-child(6) {
+  width: 13rem;
+}
+form button[type=submit] {
+  margin: 2rem 2rem 2rem 0;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 5px;
+  cursor: pointer;
+  border-bottom: 0;
+}
+form#normal-users-form button[type=submit] {
+  border: 1px solid green;
+  background-color: lightgreen;
+}
+form#volunteer-users-form button[type=submit] {
+  border: 1px solid red;
+  background-color: lightcoral;
+}
+
+/*# sourceMappingURL=super_admin.css.map */

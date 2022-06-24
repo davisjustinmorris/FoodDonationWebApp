@@ -1,0 +1,78 @@
+body {
+  height: 100vh;
+}
+
+#login, #signup {
+  display: none;
+  border-radius: 5px;
+  box-shadow: 0 0 5px -1px rgba(51, 51, 51, 0.6666666667);
+  padding: 2rem 3rem;
+  min-width: 20rem;
+  background-color: rgba(238, 238, 238, 0.8666666667);
+}
+#login.active, #signup.active {
+  display: flex;
+}
+#login h3, #signup h3 {
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  font-size: 2rem;
+  font-weight: lighter;
+  color: #0070ba;
+}
+#login input[type=text], #login input[type=password], #login textarea, #signup input[type=text], #signup input[type=password], #signup textarea {
+  padding: 7px;
+  font-size: 1rem;
+  border: 1px solid rgba(51, 51, 51, 0.6666666667);
+  border-radius: 5px;
+}
+#login input[type=text]:focus, #login input[type=password]:focus, #login textarea:focus, #signup input[type=text]:focus, #signup input[type=password]:focus, #signup textarea:focus {
+  outline: none;
+  border-color: #0070ba;
+}
+#login input[type=text], #login input[type=password], #login textarea, #login > label, #signup input[type=text], #signup input[type=password], #signup textarea, #signup > label {
+  margin-bottom: 0.8rem;
+}
+#login input[type=submit], #login input[type=button], #signup input[type=submit], #signup input[type=button] {
+  height: 2.8rem;
+  text-transform: capitalize;
+  font-weight: 600;
+  border-radius: 3rem;
+  border: 1px solid #333;
+}
+#login input[type=submit], #signup input[type=submit] {
+  background-color: #0070ba;
+  border-color: #0070ba;
+  color: #FFF;
+  margin-top: 5px;
+}
+#login input[type=button], #signup input[type=button] {
+  border-color: #0070ba;
+  color: #0070ba;
+}
+#login label > span, #signup label > span {
+  margin-left: 5px;
+  cursor: pointer;
+}
+#login span.log_sign, #signup span.log_sign {
+  text-decoration: underline;
+  color: #029;
+  cursor: pointer;
+  align-self: center;
+}
+#login .divider, #signup .divider {
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+}
+#login .divider .line, #signup .divider .line {
+  flex-grow: 1;
+  height: 1px;
+  background-color: rgba(51, 51, 51, 0.6);
+}
+#login .divider span, #signup .divider span {
+  color: rgba(51, 51, 51, 0.6666666667);
+  margin: 0 5px;
+}
+
+/*# sourceMappingURL=login.css.map */
