@@ -24,6 +24,8 @@ def get_db_connection():
 db_man = DbManager(connection_provider=get_db_connection)
 
 
+# function that implements security by checking if the login session is valid.
+# checking is done by looking up the session token from the database before accessing sensitive urls
 @app.before_request
 def before_each_req():
     if request.endpoint in ['handle_user_dashboard', 'handle_admin_dashboard', 'handle_super_admin']:
@@ -38,6 +40,7 @@ def before_each_req():
         return redirect(url_for('handle_login'))
 
 
+# redirect to /login which checks the session status and further redirects to the user's respective home page bases on user type
 @app.route('/')
 def handle_root():
     return redirect(url_for('handle_login'))
